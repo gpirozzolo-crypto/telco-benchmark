@@ -1,6 +1,11 @@
 # Telco Benchmark
 
-Sito pubblico che confronta i mercati telecomunicazioni nazionali su contesto, domanda, struttura competitiva, economics, investimenti e rete. Il pilota copre i Big 5 europei (Italia, Germania, Francia, Spagna, Regno Unito).
+Sito pubblico che confronta i mercati telecomunicazioni nazionali su contesto, domanda, struttura competitiva, economics, investimenti e rete. Copre 17 paesi, selezionabili in gruppi:
+
+- **Big 5 europei**: Italia, Germania, Francia, Spagna, Regno Unito.
+- **Benchmark globali**: Stati Uniti, Canada, Messico, Brasile, Giappone, Corea del Sud, Australia, Cina, India, Turchia, Arabia Saudita, Sudafrica.
+
+Per i benchmark globali il contesto macro e la penetrazione arrivano in automatico da World Bank. Quote di mercato e SIM sono curate per India (TRAI), Brasile (Anatel), Messico (CRT) e Turchia (BTK). Per gli altri paesi i dati di mercato sono ancora da raccogliere: il sito li mostra come non disponibili.
 
 Il sito è un file HTML statico, rigenerato e pubblicato su GitHub Pages da GitHub Actions. Non dipende da nessun account personale né da servizi a pagamento.
 
@@ -46,9 +51,8 @@ Le quote di mercato stanno in `data/curated/market_shares.csv`. Da qui si calcol
 
 ## Aggiungere un paese
 
-1. Aggiungi l'oggetto in `config/countries.json`, con `iso3` per World Bank, superficie, valuta e operatori di rete.
-2. Aggiungi il colore `--c-XX` nel CSS di `site/template.html` (tema chiaro e scuro).
-3. Aggiungi le righe del paese nei due CSV curati.
+1. Aggiungi l'oggetto in `config/countries.json`, con `iso3` per World Bank, regione, gruppo (`big5` o `global`), colori per tema chiaro e scuro, superficie, valuta e operatori di rete.
+2. Aggiungi le righe del paese nei due CSV curati.
 
 I dati World Bank arrivano da soli al primo run.
 

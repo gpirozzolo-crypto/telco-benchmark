@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Telco Benchmark · Big 5 europei</title>
+<title>Telco Benchmark · Europa e benchmark globali</title>
 <meta name="description" content="Confronto tra i principali mercati telecomunicazioni europei: struttura di mercato, economics, investimenti, domanda e qualità di rete, con fonti pubbliche e aggiornamento automatico.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,7 +63,10 @@ nav.tabs a:hover { color: var(--ink); }
   letter-spacing: -0.025em; margin: 0 0 18px; max-width: 16ch;
 }
 .hero p { margin: 0; color: var(--muted); max-width: 62ch; font-size: 17px; }
-.legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 8px; align-items: center; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; margin: 26px 0 0; }
+.presets button { border: 1px solid var(--rule); background: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-weight: 600; color: var(--muted); }
+.presets button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 8px; align-items: center; }
 .legend .hint { color: var(--faint); font-size: 14px; margin-left: 4px; }
 .chip {
   display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--rule); background: var(--surface);
@@ -92,9 +95,9 @@ nav.tabs a:hover { color: var(--ink); }
 }
 .comp.A { color: var(--ok); border-color: currentColor; }
 .comp.C { color: var(--warn); border-color: currentColor; }
-.track { position: relative; height: 44px; }
-.track::before { content: ""; position: absolute; left: 0; right: 0; top: 22px; height: 2px; background: var(--track); border-radius: 2px; }
-.track .ends { position: absolute; top: 30px; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 12px; color: var(--faint); pointer-events: none; }
+.track { position: relative; height: var(--h, 44px); }
+.track::before { content: ""; position: absolute; left: 0; right: 0; top: calc(var(--h, 44px) - 22px); height: 2px; background: var(--track); border-radius: 2px; }
+.track .ends { position: absolute; top: calc(var(--h, 44px) - 14px); left: 0; right: 0; display: flex; justify-content: space-between; font-size: 12px; color: var(--faint); pointer-events: none; }
 .dot {
   position: absolute; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--c);
   border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--c); transition: opacity .15s, transform .15s;
@@ -102,7 +105,7 @@ nav.tabs a:hover { color: var(--ink); }
 .dot.hl { transform: scale(1.35); z-index: 2; }
 .dot.dim { opacity: 0.18; }
 .dot .tag { position: absolute; bottom: 19px; left: 50%; transform: translateX(-50%); font-size: 11.5px; font-weight: 700; color: var(--c); white-space: nowrap; }
-.missing { position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-size: 12px; color: var(--faint); pointer-events: none; }
+.missing { position: absolute; left: 0; right: 0; top: calc(var(--h, 44px) - 14px); text-align: center; font-size: 12px; color: var(--faint); pointer-events: none; }
 .label .nd { color: var(--warn); }
 .tip {
   position: fixed; z-index: 50; background: var(--ink); color: var(--paper); padding: 8px 10px; border-radius: 6px;
@@ -119,10 +122,13 @@ nav.tabs a:hover { color: var(--ink); }
 .bar .v { font-weight: 700; color: var(--ink); margin-right: 6px; }
 
 /* Paesi */
+.seg-wrap { margin-top: 32px; display: grid; gap: 10px; }
+.seg-wrap .rg { font-size: 13px; color: var(--muted); font-weight: 600; margin-right: 6px; }
 .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 3px; flex-wrap: wrap; }
 .seg button { border: 0; background: none; padding: 7px 14px; border-radius: 6px; cursor: pointer; font-weight: 500; }
 .seg button[aria-pressed="true"] { background: var(--c); color: #fff; }
 .profile { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; margin: 32px 0 64px; }
+.profile .region { color: var(--muted); font-size: 14px; margin: 0 0 4px; }
 .profile h2 { font-stretch: 125%; font-weight: 800; font-size: clamp(36px, 5vw, 56px); margin: 0; line-height: 1; letter-spacing: -0.02em; color: var(--c); }
 .profile .ctx { color: var(--muted); max-width: 58ch; margin: 14px 0 28px; }
 .facts { margin: 0; }
@@ -189,7 +195,7 @@ footer { border-top: 1px solid var(--rule); color: var(--muted); font-size: 13.5
 <body>
 <header class="top">
   <div class="wrap">
-    <div class="brand">Telco Benchmark<span>Big 5 europei</span></div>
+    <div class="brand">Telco Benchmark<span>Europa e mondo</span></div>
     <nav class="tabs" aria-label="Sezioni">
       <a href="#quadro" data-tab="quadro">Quadro</a>
       <a href="#paesi" data-tab="paesi">Paesi</a>
@@ -202,15 +208,16 @@ footer { border-top: 1px solid var(--rule); color: var(--muted); font-size: 13.5
 <main class="wrap">
   <section id="v-quadro">
     <div class="hero">
-      <h1>Cinque mercati, una scala per ogni indicatore.</h1>
-      <p>Ogni linea va dal valore più basso al più alto tra i paesi. Passa sopra un punto per il dato, apri una riga per valori, periodo e fonte.</p>
+      <h1 id="hero-title">Mercati telecom, una scala per ogni indicatore.</h1>
+      <p>Ogni linea va dal valore più basso al più alto tra i paesi selezionati. Passa sopra un punto per il dato, apri una riga per valori, periodo e fonte.</p>
+      <div class="presets" id="presets" role="group" aria-label="Paesi da mostrare"></div>
       <div class="legend" id="legend"></div>
     </div>
     <div class="board" id="board"></div>
   </section>
 
   <section id="v-paesi" hidden>
-    <div style="margin-top:32px" class="seg" id="country-seg" role="group" aria-label="Scegli il paese"></div>
+    <div class="seg-wrap" id="country-seg" role="group" aria-label="Scegli il paese"></div>
     <div id="profile"></div>
   </section>
 
@@ -219,6 +226,7 @@ footer { border-top: 1px solid var(--rule); color: var(--muted); font-size: 13.5
       <label>Asse orizzontale <select id="sel-x"></select></label>
       <label>Asse verticale <select id="sel-y"></select></label>
     </div>
+    <p class="note" id="cmp-note" style="margin:-4px 0 12px"></p>
     <div class="plot" id="plot"></div>
     <h2 style="font-stretch:112%;margin:40px 0 4px">Tutti gli indicatori, affiancati</h2>
     <p class="note" style="margin:0 0 12px">In grassetto il valore più alto per gli indicatori in cui un valore alto è preferibile (o il più basso, per la concentrazione).</p>
@@ -278,7 +286,18 @@ const D = /*__DATA__*/null;
   const C = Object.fromEntries(D.countries.map(c => [c.id, c]));
   const K = Object.fromEntries(D.kpis.map(k => [k.id, k]));
   const SRC = Object.fromEntries(D.sources.map(s => [s.id, s]));
-  const IDS = D.countries.map(c => c.id);
+  const ALL = D.countries.map(c => c.id);
+  // colori dei paesi dalla configurazione (chiaro e scuro)
+  (function injectColors() {
+    const light = D.countries.map(c => `--c-${c.id}:${c.color}`).join(";");
+    const dark = D.countries.map(c => `--c-${c.id}:${c.color_dark || c.color}`).join(";");
+    const st = document.createElement("style");
+    st.textContent = `:root{${light}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${dark}}}:root[data-theme="dark"]{${dark}}`;
+    document.head.append(st);
+  })();
+  const PRESETS = D.presets || [{ id: "all", label: "Tutti" }];
+  const inPreset = (p, c) => p === "all" || c.group === p;
+  let IDS = ALL.slice();
   const color = id => `var(--c-${id})`;
   const val = (cid, k) => (D.values[cid] || {})[k];
   const nf = {};
@@ -290,7 +309,20 @@ const D = /*__DATA__*/null;
   };
   const withUnit = (k, v) => v == null ? "n.d." : `${fmt(k, v)}${K[k].unit ? " " + K[k].unit : ""}`;
   const srcName = id => id === "derived" ? "calcolato" : id === "config" ? "configurazione mercato" : (SRC[id] ? SRC[id].name : id);
-  const state = { tab: "quadro", focus: null, open: new Set(), country: "IT", x: "gdp_pc", y: "arpu_mobile" };
+  const state = { tab: "quadro", focus: null, open: new Set(), country: "IT", x: "gdp_pc", y: "arpu_mobile", preset: "all" };
+  function setPreset(p) {
+    state.preset = p;
+    IDS = D.countries.filter(c => inPreset(p, c)).map(c => c.id);
+    if (state.focus && !IDS.includes(state.focus)) state.focus = null;
+    renderPresets(); renderLegend(); renderBoard();
+    rendered.confronto = false;
+    $("#hero-title").textContent = `${IDS.length} mercati, una scala per ogni indicatore.`;
+  }
+  function renderPresets() {
+    const box = $("#presets"); box.replaceChildren();
+    for (const p of PRESETS) box.append(h("button", { type: "button", "aria-pressed": String(state.preset === p.id), onclick: () => setPreset(p.id) },
+      `${p.label} (${D.countries.filter(c => inPreset(p.id, c)).length})`));
+  }
 
   /* ---------- tooltip ---------- */
   const tip = $("#tip");
@@ -306,7 +338,7 @@ const D = /*__DATA__*/null;
   /* ---------- legenda ---------- */
   function renderLegend() {
     const box = $("#legend"); box.replaceChildren();
-    for (const c of D.countries) {
+    for (const c of D.countries.filter(c => IDS.includes(c.id))) {
       box.append(h("button", {
         class: "chip" + (state.focus && state.focus !== c.id ? " off" : ""), type: "button", style: { "--c": color(c.id) },
         "aria-pressed": String(state.focus === c.id),
@@ -332,7 +364,10 @@ const D = /*__DATA__*/null;
     let min = Math.min(...vs), max = Math.max(...vs);
     if (!isFinite(min)) { min = 0; max = 1; }
     if (max === min) { min -= 1; max += 1; }
-    const pos = v => ((v - min) / (max - min)) * 100;
+    // scala logaritmica quando i valori differiscono di oltre 20 volte (es. SIM di India e Spagna)
+    const useLog = min > 0 && max / min > 20;
+    const tf = v => useLog ? Math.log10(v) : v;
+    const pos = v => ((tf(v) - tf(min)) / ((tf(max) - tf(min)) || 1)) * 100;
     const track = h("div", { class: "track" });
     // corsie verticali per punti quasi sovrapposti
     const placed = [];
@@ -351,13 +386,17 @@ const D = /*__DATA__*/null;
       }, state.focus === id ? h("span", { class: "tag" }, fmt(k.id, r.value)) : null);
       track.append(d);
     });
-    track.append(h("div", { class: "ends" }, h("span", {}, pts.length ? fmt(k.id, Math.min(...vs)) : ""), h("span", {}, pts.length ? fmt(k.id, Math.max(...vs)) : "")));
+    const lanes = placed.reduce((m, q) => Math.max(m, q.lane), 0);
+    track.style.setProperty("--h", (44 + lanes * 12) + "px");
+    track.querySelectorAll(".dot").forEach(d => { d.style.top = (parseFloat(d.style.top) + lanes * 12) + "px"; });
+    track.append(h("div", { class: "ends" }, h("span", {}, pts.length ? fmt(k.id, Math.min(...vs)) : ""),
+      useLog ? h("span", {}, "scala logaritmica") : null, h("span", {}, pts.length ? fmt(k.id, Math.max(...vs)) : "")));
     const miss = IDS.filter(id => !val(id, k.id));
     if (!pts.length) track.append(h("span", { class: "missing" }, k.origin === "auto" ? "In arrivo con il prossimo aggiornamento automatico" : "Dato non ancora disponibile"));
     const open = state.open.has(k.id);
     const head = h("button", { class: "row-head", type: "button", "aria-expanded": String(open),
       onclick: () => { open ? state.open.delete(k.id) : state.open.add(k.id); hideTip(); renderBoard(); } },
-      h("span", { class: "label" }, k.label, h("small", {}, k.unit || " ", pts.length && miss.length ? h("span", { class: "nd" }, ` · n.d. ${miss.join(", ")}`) : null)),
+      h("span", { class: "label" }, k.label, h("small", {}, k.unit || " ", pts.length && miss.length ? h("span", { class: "nd", title: "Non disponibile: " + miss.map(id => C[id].name).join(", ") }, miss.length > 5 ? ` · n.d. per ${miss.length} paesi` : ` · n.d. ${miss.join(", ")}`) : null)),
       track,
       h("span", { class: "comp " + k.comparability, title: "Confrontabilità " + k.comparability }, k.comparability));
     const row = h("div", { class: "row" }, head);
@@ -385,7 +424,7 @@ const D = /*__DATA__*/null;
   /* ---------- paesi ---------- */
   function rankOf(cid, k) {
     const r = val(cid, k.id); if (!r || !k.better) return "";
-    const vs = IDS.map(id => val(id, k.id)).filter(Boolean).map(x => x.value);
+    const vs = ALL.map(id => val(id, k.id)).filter(Boolean).map(x => x.value);
     const sorted = vs.slice().sort((a, b) => k.better === "high" ? b - a : a - b);
     return `${sorted.indexOf(r.value) + 1}° su ${vs.length}`;
   }
@@ -404,14 +443,19 @@ const D = /*__DATA__*/null;
     return svg;
   }
   function renderCountrySeg() {
-    const seg = $("#country-seg"); seg.replaceChildren();
-    for (const c of D.countries) seg.append(h("button", { type: "button", style: { "--c": color(c.id) }, "aria-pressed": String(state.country === c.id),
-      onclick: () => { state.country = c.id; location.hash = "paesi/" + c.id; } }, c.name));
+    const wrap = $("#country-seg"); wrap.replaceChildren();
+    const regions = [...new Set(D.countries.map(c => c.region || ""))];
+    for (const rg of regions) {
+      const seg = h("div", { class: "seg" });
+      for (const c of D.countries.filter(c => (c.region || "") === rg)) seg.append(h("button", { type: "button", style: { "--c": color(c.id) }, "aria-pressed": String(state.country === c.id),
+        onclick: () => { state.country = c.id; location.hash = "paesi/" + c.id; } }, c.name));
+      wrap.append(h("div", {}, rg ? h("span", { class: "rg" }, rg) : null, seg));
+    }
   }
   function renderProfile() {
     renderCountrySeg();
     const c = C[state.country], box = $("#profile");
-    const left = h("div", {}, h("h2", { style: { "--c": color(c.id) } }, c.name), h("p", { class: "ctx" }, c.context));
+    const left = h("div", {}, c.region ? h("p", { class: "region" }, c.region) : null, h("h2", { style: { "--c": color(c.id) } }, c.name), h("p", { class: "ctx" }, c.context));
     const facts = h("div", { class: "facts" });
     for (const g of D.groups) {
       const dl = h("dl");
@@ -557,9 +601,10 @@ const D = /*__DATA__*/null;
     document.querySelectorAll("nav.tabs a").forEach(a => { if (a.dataset.tab === state.tab) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
     for (const t of ["quadro", "paesi", "confronto", "fonti"]) $("#v-" + t).hidden = t !== state.tab;
     hideTip();
-    if (state.tab === "quadro" && !rendered.quadro) { renderLegend(); renderBoard(); rendered.quadro = true; }
+    if (state.tab === "quadro" && !rendered.quadro) { setPreset(state.preset); rendered.quadro = true; }
     if (state.tab === "paesi") renderProfile();
     if (state.tab === "confronto" && !rendered.confronto) { fillSelects(); renderPlot(); renderSideTable(); rendered.confronto = true; }
+    if (state.tab === "confronto") $("#cmp-note").textContent = `Paesi mostrati: ${IDS.map(id => C[id].name).join(", ")}. Cambia la selezione dal Quadro.`;
     if (state.tab === "fonti" && !rendered.fonti) { renderSources(); renderAllTable(); rendered.fonti = true; }
   }
   addEventListener("hashchange", route);
@@ -567,7 +612,7 @@ const D = /*__DATA__*/null;
   $("#foot").replaceChildren(
     h("div", {}, `Dati generati il ${new Date(D.built_at).toLocaleString("it-IT", { dateStyle: "long", timeStyle: "short" })}. `,
       stale ? `${stale} fonti curate da aggiornare. ` : "Tutte le fonti entro la scadenza. ",
-      "Fonti pubbliche: World Bank, BCE, Commissione europea, AGCOM, Bundesnetzagentur, Arcep, CNMC, Ofcom, Ookla."),
+      "Fonti pubbliche: World Bank, BCE, Commissione europea, AGCOM, Bundesnetzagentur, Arcep, CNMC, Ofcom, TRAI, Anatel, CRT, BTK, Ookla."),
   );
   route();
 })();

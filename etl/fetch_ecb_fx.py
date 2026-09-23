@@ -13,7 +13,7 @@ from common import DATA, merge_keep_last_good, read_csv, write_csv
 URL = "https://data-api.ecb.europa.eu/service/data/EXR/A.{cur}.EUR.SP00.A?format=csvdata&startPeriod=2014"
 FIELDS = ["currency", "year", "eur_per_unit", "source_id", "retrieved", "via"]
 OUT = DATA / "auto" / "ecb_fx.csv"
-CURRENCIES = ["USD", "GBP"]
+CURRENCIES = ["USD", "GBP", "JPY", "KRW", "AUD", "CAD", "CNY", "INR", "BRL", "MXN", "TRY", "ZAR"]
 
 
 def parse_csv(text, currency, retrieved):

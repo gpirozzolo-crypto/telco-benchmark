@@ -55,6 +55,9 @@ class Build:
         """EUR per unità di valuta nell'anno richiesto, o nell'anno più vicino disponibile."""
         if currency in ("EUR", "", None):
             return 1.0, None
+        if currency == "SAR":  # riyal agganciato al dollaro: 3,75 SAR = 1 USD
+            usd, note = self.eur_rate("USD", year)
+            return usd / 3.75, (note or "").replace("USD", "SAR (via USD, cambio fisso 3,75)")
         table = self.fx.get(currency)
         if not table:
             raise ValueError(f"Cambio {currency} mancante: esegui etl/fetch_ecb_fx.py")

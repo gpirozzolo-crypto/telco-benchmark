@@ -90,6 +90,38 @@
       "stale_after_days": 200
     },
     {
+      "id": "trai",
+      "name": "TRAI - Telecom Subscription Data (India)",
+      "url": "https://telecomtalk.info/india-adds-6million-wireless-subscribers-july2026-trai/1011300/",
+      "type": "curated",
+      "cadence": "mensile",
+      "stale_after_days": 120
+    },
+    {
+      "id": "anatel",
+      "name": "Anatel - Relatório de Monitoramento da Competição (Brasile)",
+      "url": "https://dplnews.com/?p=323486",
+      "type": "curated",
+      "cadence": "trimestrale",
+      "stale_after_days": 200
+    },
+    {
+      "id": "crt",
+      "name": "CRT - Reporte de Datos del Sector (Messico)",
+      "url": "https://mobiletime.la/noticias/23/04/2026/mexico-aumento-de-lineas-moviles/",
+      "type": "curated",
+      "cadence": "trimestrale",
+      "stale_after_days": 300
+    },
+    {
+      "id": "btk",
+      "name": "BTK - Pazar Verileri Raporu (Turchia)",
+      "url": "https://www.cnbce.com/haberler/5g-sonrasi-merak-ediliyordu-guncel-veriler-aciklandi-mobil-operatorlerin-abone-sayilari-belli-oldu-h28031",
+      "type": "curated",
+      "cadence": "trimestrale",
+      "stale_after_days": 200
+    },
+    {
       "id": "secondary",
       "name": "Fonti secondarie (stampa di settore, report operatori)",
       "url": "",

@@ -14,7 +14,10 @@
         "WindTre",
         "Iliad"
       ],
-      "context": "Fastweb e Vodafone Italia operano come gruppo unico; FiberCop è certificato operatore solo wholesale. Iliad resta il principale sfidante per crescita di quota."
+      "context": "Fastweb e Vodafone Italia operano come gruppo unico; FiberCop è certificato operatore solo wholesale. Iliad resta il principale sfidante per crescita di quota.",
+      "region": "Europa",
+      "group": "big5",
+      "color_dark": "#3FC2A3"
     },
     {
       "id": "DE",
@@ -29,7 +32,10 @@
         "Telefónica O2",
         "1&1"
       ],
-      "context": "1&1 ha completato a fine 2025 la migrazione dei clienti sulla propria rete: dopo oltre 25 anni il mercato torna ad avere quattro reti complete."
+      "context": "1&1 ha completato a fine 2025 la migrazione dei clienti sulla propria rete: dopo oltre 25 anni il mercato torna ad avere quattro reti complete.",
+      "region": "Europa",
+      "group": "big5",
+      "color_dark": "#F0A640"
     },
     {
       "id": "FR",
@@ -44,7 +50,10 @@
         "Bouygues Telecom",
         "Free Mobile"
       ],
-      "context": "A giugno 2026 Bouygues Telecom, Free e Orange hanno siglato un protocollo per rilevare e spartirsi SFR: se approvato, il mercato passerebbe da quattro a tre operatori di rete."
+      "context": "A giugno 2026 Bouygues Telecom, Free e Orange hanno siglato un protocollo per rilevare e spartirsi SFR: se approvato, il mercato passerebbe da quattro a tre operatori di rete.",
+      "region": "Europa",
+      "group": "big5",
+      "color_dark": "#8E9BFF"
     },
     {
       "id": "ES",
@@ -64,7 +73,10 @@
         "Orange": "MasOrange",
         "MASORANGE": "MasOrange",
         "OMV": "MVNO"
-      }
+      },
+      "region": "Europa",
+      "group": "big5",
+      "color_dark": "#FF7A92"
     },
     {
       "id": "GB",
@@ -78,7 +90,233 @@
         "VodafoneThree",
         "Virgin Media O2"
       ],
-      "context": "Con la fusione Vodafone-Three (2025) restano tre operatori di rete. VodafoneThree dichiara 28,6 mln di clienti mobili, Virgin Media O2 circa 22,4 mln retail (contratto + prepagato) più 10,4 mln wholesale (giffgaff escluso, Tesco, Sky). BT/EE non pubblica più la base mobile totale: per questo le quote e l'HHI non sono calcolabili da fonte pubblica."
+      "context": "Con la fusione Vodafone-Three (2025) restano tre operatori di rete. VodafoneThree dichiara 28,6 mln di clienti mobili, Virgin Media O2 circa 22,4 mln retail (contratto + prepagato) più 10,4 mln wholesale (giffgaff escluso, Tesco, Sky). BT/EE non pubblica più la base mobile totale: per questo le quote e l'HHI non sono calcolabili da fonte pubblica.",
+      "region": "Europa",
+      "group": "big5",
+      "color_dark": "#B79BE6"
+    },
+    {
+      "id": "US",
+      "iso3": "USA",
+      "name": "Stati Uniti",
+      "region": "Americhe",
+      "group": "global",
+      "color": "#1565C0",
+      "color_dark": "#64B5F6",
+      "land_km2": 9147420,
+      "currency": "USD",
+      "mnos": [
+        "AT&T",
+        "Verizon",
+        "T-Mobile US"
+      ],
+      "context": "Tre operatori nazionali. Nel 2025 EchoStar ha ceduto lo spettro ad AT&T e SpaceX: Boost Mobile passa a un modello ibrido su rete AT&T. Forte crescita dell'accesso fisso wireless (FWA) come alternativa alla banda larga."
+    },
+    {
+      "id": "CA",
+      "iso3": "CAN",
+      "name": "Canada",
+      "region": "Americhe",
+      "group": "global",
+      "color": "#AD1457",
+      "color_dark": "#F48FB1",
+      "land_km2": 8965590,
+      "currency": "CAD",
+      "mnos": [
+        "Rogers",
+        "Bell",
+        "Telus",
+        "Freedom (Quebecor)"
+      ],
+      "context": "Dopo l'acquisizione di Shaw da parte di Rogers (2023), Freedom Mobile di Quebecor è il quarto operatore nazionale, sostenuto dal regolatore per aumentare la concorrenza sui prezzi."
+    },
+    {
+      "id": "MX",
+      "iso3": "MEX",
+      "name": "Messico",
+      "region": "Americhe",
+      "group": "global",
+      "color": "#6D4C41",
+      "color_dark": "#BCAAA4",
+      "land_km2": 1943950,
+      "currency": "MXN",
+      "mnos": [
+        "Telcel",
+        "AT&T",
+        "Altán (rete wholesale)"
+      ],
+      "context": "Telcel (América Móvil) resta dominante. Movistar opera sulla rete di AT&T e Telefónica ha venduto l'attività messicana; Bait (Walmart) è il principale operatore virtuale. Dal 2025 la CRT ha sostituito l'IFT e conta solo le linee realmente attive."
+    },
+    {
+      "id": "BR",
+      "iso3": "BRA",
+      "name": "Brasile",
+      "region": "Americhe",
+      "group": "global",
+      "color": "#2E7D32",
+      "color_dark": "#81C784",
+      "land_km2": 8358140,
+      "currency": "BRL",
+      "mnos": [
+        "Vivo",
+        "Claro",
+        "TIM"
+      ],
+      "context": "Dopo lo smembramento di Oi Móvel (2022) restano tre operatori nazionali. Nella banda larga fissa i piccoli provider regionali superano il 50% del mercato."
+    },
+    {
+      "id": "JP",
+      "iso3": "JPN",
+      "name": "Giappone",
+      "region": "Asia-Pacifico",
+      "group": "global",
+      "color": "#D84315",
+      "color_dark": "#FFAB91",
+      "land_km2": 364500,
+      "currency": "JPY",
+      "mnos": [
+        "NTT Docomo",
+        "KDDI",
+        "SoftBank",
+        "Rakuten Mobile"
+      ],
+      "context": "Quattro operatori di rete; Rakuten Mobile è il più recente (2020). Le politiche pubbliche hanno spinto tariffe più basse e i sub-brand low cost."
+    },
+    {
+      "id": "KR",
+      "iso3": "KOR",
+      "name": "Corea del Sud",
+      "region": "Asia-Pacifico",
+      "group": "global",
+      "color": "#00838F",
+      "color_dark": "#80DEEA",
+      "land_km2": 97600,
+      "currency": "KRW",
+      "mnos": [
+        "SK Telecom",
+        "KT",
+        "LG U+"
+      ],
+      "context": "Tre operatori; il tentativo di licenziare un quarto operatore (Stage X) è stato revocato nel 2025. Tra i primi mercati al mondo per 5G."
+    },
+    {
+      "id": "AU",
+      "iso3": "AUS",
+      "name": "Australia",
+      "region": "Asia-Pacifico",
+      "group": "global",
+      "color": "#B7950B",
+      "color_dark": "#F4D03F",
+      "land_km2": 7692020,
+      "currency": "AUD",
+      "mnos": [
+        "Telstra",
+        "Optus",
+        "TPG Telecom"
+      ],
+      "context": "Tre operatori mobili. La rete fissa è in gran parte della società pubblica NBN Co, che vende accesso all'ingrosso a tutti i provider."
+    },
+    {
+      "id": "CN",
+      "iso3": "CHN",
+      "name": "Cina",
+      "region": "Asia-Pacifico",
+      "group": "global",
+      "color": "#8E0000",
+      "color_dark": "#E57373",
+      "land_km2": 9424702,
+      "currency": "CNY",
+      "mnos": [
+        "China Mobile",
+        "China Telecom",
+        "China Unicom",
+        "China Broadnet"
+      ],
+      "context": "Quattro operatori pubblici, con China Mobile nettamente primo. Le reti 5G di China Telecom e Unicom sono condivise; China Tower gestisce le torri di tutti. Gli investimenti sono in calo e si spostano verso il calcolo e il cloud."
+    },
+    {
+      "id": "IN",
+      "iso3": "IND",
+      "name": "India",
+      "region": "Asia-Pacifico",
+      "group": "global",
+      "color": "#EF6C00",
+      "color_dark": "#FFB74D",
+      "land_km2": 2973190,
+      "currency": "INR",
+      "mnos": [
+        "Reliance Jio",
+        "Bharti Airtel",
+        "Vodafone Idea",
+        "BSNL"
+      ],
+      "context": "Jio e Airtel controllano insieme oltre il 77% delle linee; Vodafone Idea è in difficoltà finanziaria e dipende dal sostegno pubblico. BSNL, pubblico, sta lanciando il 4G con tecnologia nazionale."
+    },
+    {
+      "id": "TR",
+      "iso3": "TUR",
+      "name": "Turchia",
+      "region": "Medio Oriente e Africa",
+      "group": "global",
+      "color": "#283593",
+      "color_dark": "#9FA8DA",
+      "land_km2": 769630,
+      "currency": "TRY",
+      "mnos": [
+        "Turkcell",
+        "Türk Telekom",
+        "Vodafone"
+      ],
+      "context": "Tre operatori. Il 5G è stato lanciato il 1° aprile 2026 dopo l'asta del 2025; a fine 2025 Türk Telekom ha superato Vodafone per numero di clienti."
+    },
+    {
+      "id": "SA",
+      "iso3": "SAU",
+      "name": "Arabia Saudita",
+      "region": "Medio Oriente e Africa",
+      "group": "global",
+      "color": "#1B5E20",
+      "color_dark": "#A5D6A7",
+      "land_km2": 2149690,
+      "currency": "SAR",
+      "mnos": [
+        "stc",
+        "Mobily",
+        "Zain KSA"
+      ],
+      "context": "Tre operatori, con stc (a controllo pubblico) dominante. Forte spinta agli investimenti in 5G, data center e cloud nell'ambito di Vision 2030."
+    },
+    {
+      "id": "ZA",
+      "iso3": "ZAF",
+      "name": "Sudafrica",
+      "region": "Medio Oriente e Africa",
+      "group": "global",
+      "color": "#4E342E",
+      "color_dark": "#D7CCC8",
+      "land_km2": 1213090,
+      "currency": "ZAR",
+      "mnos": [
+        "Vodacom",
+        "MTN",
+        "Telkom",
+        "rain"
+      ],
+      "context": "Vodacom e MTN guidano il mercato; Cell C è passato a un modello su reti di terzi. Lo spettro ad alta capacità è stato assegnato solo con l'asta del 2022."
+    }
+  ],
+  "presets": [
+    {
+      "id": "all",
+      "label": "Tutti"
+    },
+    {
+      "id": "big5",
+      "label": "Big 5 europei"
+    },
+    {
+      "id": "global",
+      "label": "Benchmark globali"
     }
   ]
 }
