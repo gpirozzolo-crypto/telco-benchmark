@@ -242,6 +242,22 @@ def extract_monthly(records, retrieved, url):
         for kpi, service, concept, filters in MONTHLY_RULES:
             sel = [r for r in rows if _matches(r, service, concept, filters)]
             value, used, method = level_total(sel, "lineas", (filters or {}).keys(), MONTHLY_DIMS)
+            if value is None:
+                # nessun totale nazionale pubblicato: somma degli operatori (serve che ce ne siano almeno 4)
+                op_sel = [r for r in rows if _matches(r, service, concept, filters, national=False) and not _na(r.get("operador"))]
+                parts = {}
+                for op in sorted({str(r["operador"]) for r in op_sel}):
+                    v, u, _ = level_total([r for r in op_sel if str(r["operador"]) == op], "lineas", (filters or {}).keys(), MONTHLY_DIMS)
+                    if v is not None:
+                        parts[op] = (v, u)
+                if len(parts) >= 4:
+                    value = sum(v for v, _ in parts.values())
+                    used = next(iter(parts.values()))[1]
+                    method = "somma degli operatori " + ", ".join(parts)
+                elif (label, end) == periods[-1]:
+                    log.append(f"CNMC mensile {kpi} {label}: somma operatori non possibile, operatori ricostruiti {sorted(parts)}")
+                    for r in op_sel[:6]:
+                        log.append("CNMC esempio " + str({k: v for k, v in r.items() if not _na(v) and k != "_id"}))
             if (label, end) == periods[-1]:
                 log.append(f"CNMC mensile {kpi} {label}: {'ok ' + method if value is not None else 'nessun totale univoco'}; "
                            f"ricostruzioni (livello, dimensioni, milioni, righe) {level_total.last_candidates[:8]}")

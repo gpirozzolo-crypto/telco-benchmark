@@ -145,3 +145,15 @@ def test_general_mobile_revenue_ttm():
         recs.append(dict(base, tipo_de_ingreso="Telefonía fija", ingresos=500))
     out, log = sources_cnmc.extract_general(recs, "2026-09-23", "http://x")
     assert len(out) == 1 and abs(float(out[0]["value"]) - 7.88) < 1e-6
+
+
+def test_cnmc_monthly_fbb_from_operator_sum():
+    rows = []
+    base = dict(mes="2026-07", pais="España", unidades="Unidades", servicio="Banda ancha fija minorista", concepto="Líneas")
+    for op, v in [("Movistar", 6e6), ("MASORANGE", 7e6), ("Vodafone", 3e6), ("DIGI", 2.5e6), ("Resto", 1.6e6)]:
+        rows.append(dict(base, operador=op, tecnologia_de_acceso="FTTH", lineas=v * 0.9))
+        rows.append(dict(base, operador=op, tecnologia_de_acceso="Otros", lineas=v * 0.1))
+    out, log = sources_cnmc.extract_monthly(rows, "2026-09-23", "http://x")
+    by = {r["kpi"]: float(r["value"]) for r in out}
+    assert abs(by["fbb_subs"] - 20.1) < 1e-6
+    assert abs(by["ftth_subs"] - 18.09) < 1e-6
