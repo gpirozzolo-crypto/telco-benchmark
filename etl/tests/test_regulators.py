@@ -115,3 +115,30 @@ def test_month_parser_formats():
     for s in ["2026-07", "202607", "2026-07-01", "07/2026", "2026M07", "julio 2026", "2026-07-01T00:00:00"]:
         assert sources_cnmc.month(s)[0] == "2026-07", s
     assert sources_cnmc.month("2026-13") is None
+
+
+def test_level_total_multi_dimension_split():
+    base = dict(servicio="Telefonía móvil", concepto="Líneas", operador="N/A", pais="España", unidades="Unidades")
+    rows = []
+    for seg in ["Residencial", "Negocios"]:
+        for con in ["Pospago", "Prepago"]:
+            rows.append(dict(base, segmento=seg, contrato=con, lineas=10))
+    v, _, m = sources_cnmc.level_total(rows, "lineas", (), sources_cnmc.MONTHLY_DIMS)
+    assert v == 40 and "segmento" in m and "contrato" in m
+    # subtotali per segmento coerenti con il dettaglio: vince il livello più aggregato
+    rows += [dict(base, segmento="Residencial", lineas=20), dict(base, segmento="Negocios", lineas=20)]
+    v, _, m = sources_cnmc.level_total(rows, "lineas", (), sources_cnmc.MONTHLY_DIMS)
+    assert v == 40 and m == "somma per segmento"
+    # due ricostruzioni allo stesso livello in disaccordo: scartato
+    rows += [dict(base, contrato="Pospago", lineas=30), dict(base, contrato="Prepago", lineas=30)]
+    assert sources_cnmc.level_total(rows, "lineas", (), sources_cnmc.MONTHLY_DIMS)[0] is None
+
+
+def test_general_mobile_revenue_ttm():
+    recs = []
+    for i, t in enumerate(["2025T1", "2025T2", "2025T3", "2025T4"]):
+        base = dict(servicio="Datos generales", concepto="Ingresos", operador="N/A", trimestre=t, unidades="Millones de euros")
+        recs.append(dict(base, tipo_de_ingreso="Comunicaciones móviles", ingresos=1970))
+        recs.append(dict(base, tipo_de_ingreso="Telefonía fija", ingresos=500))
+    out, log = sources_cnmc.extract_general(recs, "2026-09-23", "http://x")
+    assert len(out) == 1 and abs(float(out[0]["value"]) - 7.88) < 1e-6

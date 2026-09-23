@@ -100,6 +100,40 @@ def country_total(rows, field, filters, dims_all=None):
     return None, [], None
 
 
+
+def level_total(rows, field, fixed=(), dims=None):
+    """Totale nazionale robusto a scomposizioni su più dimensioni.
+
+    Raggruppa le righe per insieme di dimensioni valorizzate ("firma"). Ogni firma senza combinazioni duplicate
+    è una possibile ricostruzione del totale. Si usa la firma più aggregata; se più firme dello stesso livello
+    danno totali diversi di oltre l'1%, il dato è ambiguo e si scarta.
+    """
+    dims = [d for d in (dims or []) if d not in set(fixed)]
+    if len({str(r.get("pais")) for r in rows}) == 1:
+        dims = [d for d in dims if d != "pais"]
+    groups = {}
+    for r in rows:
+        if _num(r.get(field)) is None:
+            continue
+        sig = tuple(d for d in dims if not _na(r.get(d)))
+        groups.setdefault(sig, []).append(r)
+    cands = []
+    for sig, rs in groups.items():
+        combos = [tuple(str(r.get(d)) for d in sig) for r in rs]
+        if len(combos) != len(set(combos)) or (not sig and len(rs) != 1):
+            continue
+        cands.append((len(sig), sum(_num(r[field]) for r in rs), sig, rs))
+    if not cands:
+        return None, [], None
+    level = min(c[0] for c in cands)
+    same = [c for c in cands if c[0] == level]
+    values = [c[1] for c in same]
+    if max(values) - min(values) > 0.01 * max(values):
+        return None, [], None
+    _, total, sig, rs = same[0]
+    return total, rs, ("totale diretto" if not sig else "somma per " + " x ".join(sig))
+
+
 def operator_total(rows, field):
     """Fallback FTTH: somma operatore+segmento, solo se non ci sono coppie duplicate."""
     named = [(r, _num(r.get(field))) for r in rows if not _na(r.get("operador")) and _num(r.get(field)) is not None]
@@ -206,7 +240,7 @@ def extract_monthly(records, retrieved, url):
     for (label, end), rows in by_period.items():
         for kpi, service, concept, filters in MONTHLY_RULES:
             sel = [r for r in rows if _matches(r, service, concept, filters)]
-            value, used, method = country_total(sel, "lineas", filters, MONTHLY_DIMS)
+            value, used, method = level_total(sel, "lineas", (filters or {}).keys(), MONTHLY_DIMS)
             if value is None:
                 continue
             f = scale(used[0].get("unidades"), "count")
@@ -219,13 +253,54 @@ def extract_monthly(records, retrieved, url):
         sel = [r for r in rows if _matches(r, "Telefonía móvil", "Líneas", None, national=False) and not _na(r.get("operador"))]
         totals = {}
         for op in sorted({str(r["operador"]) for r in sel}):
-            v, _, _ = country_total([r for r in sel if str(r["operador"]) == op], "lineas", None, MONTHLY_DIMS)
+            v, _, _ = level_total([r for r in sel if str(r["operador"]) == op], "lineas", (), MONTHLY_DIMS)
             if v is not None:
                 totals[op] = v
         total = sum(totals.values())
         if len(totals) >= 3 and total > 0:
             for op, v in totals.items():
                 out.append(row(f"share|{op}", label, end, v / total * 100, "CNMC dati mensili, linee mobili per operatore"))
+    if not any(r["kpi"] == "mobile_subs" for r in out) and periods:
+        last = periods[-1]
+        sample = [r for r in by_period[last] if r.get("servicio") == "Telefonía móvil" and r.get("concepto") == "Líneas"][:10]
+        for r in sample:
+            log.append("CNMC esempio " + str({k: v for k, v in r.items() if not _na(v) and k != "_id"}))
+    return out, log
+
+
+
+def extract_general(records, retrieved, url):
+    """Dataset 'Datos Generales': ricavi (milioni di euro) per tipo di ricavo. Ricavi mobili = somma 4 trimestri."""
+    out, log = [], []
+    rev = [r for r in records if r.get("servicio") == "Datos generales" and r.get("concepto") == "Ingresos" and _na(r.get("operador"))]
+    labels = sorted({str(r.get("tipo_de_ingreso")) for r in rev})
+    markets = sorted({str(r.get("tipo_de_mercado")) for r in rev})
+    log.append(f"CNMC ricavi: tipi di ricavo {labels[:25]}; mercati {markets[:10]}")
+    mobile = [l for l in labels if ("móvil" in l.lower() or "movil" in l.lower()) and "fij" not in l.lower()]
+    if len(mobile) != 1:
+        log.append(f"CNMC ricavi: etichetta per i ricavi mobili non univoca {mobile}, nessun valore prodotto")
+        return out, log
+    per_q = {}
+    for r in rev:
+        if r.get("tipo_de_ingreso") != mobile[0]:
+            continue
+        q = quarter(r.get("trimestre"))
+        v = _num(r.get("ingresos"))
+        f = scale(r.get("unidades"), "money")
+        if not q or v is None or f is None:
+            continue
+        mkt = r.get("tipo_de_mercado")
+        if not _na(mkt) and "minor" not in str(mkt).lower():
+            continue  # solo minorista o totale
+        per_q.setdefault(q, []).append(v * f)
+    clean = {q: v[0] for q, v in per_q.items() if len(v) == 1}
+    qs = sorted(clean, key=lambda q: q[1])
+    for i in range(3, len(qs)):
+        w = qs[i - 3:i + 1]
+        if _consecutive([x[0] for x in w]):
+            out.append({"country": "ES", "kpi": "mobile_rev", "value": f"{sum(clean[x] for x in w):.6g}", "period": f"12 mesi a {w[-1][0]}",
+                        "period_end": w[-1][1].isoformat(), "frequency": "annuale mobile", "source_id": "cnmc_api", "source_url": url,
+                        "retrieved": retrieved, "method": f"CNMC Datos generales, '{mobile[0]}', somma di 4 trimestri"})
     return out, log
 
 
@@ -289,17 +364,14 @@ def run(session, retrieved):
             log += describe(records)
         rows += got
     res, url = find_resource(session, log, "trimestral")
-    res = res or MARKETS_RESOURCE
-    try:
-        records = fetch_records(session, res)
-        got, l = extract(records, retrieved)
-        log += l
-        got = [g for g in got if g["kpi"] in ("mobile_rev", "mobile_data")]  # le linee arrivano già dal mensile
-        if not got:
-            log += ["CNMC trimestrale: nessun ricavo o traffico estratto"] + describe(records)
-        rows += got
-    except Exception as exc:  # noqa: BLE001
-        log.append(f"CNMC trimestrale: errore {exc}")
+    if res:
+        try:
+            records = fetch_records(session, res)
+            got, l = extract_general(records, retrieved, url)
+            log += l
+            rows += got
+        except Exception as exc:  # noqa: BLE001
+            log.append(f"CNMC trimestrale: errore {exc}")
     return rows, log
 
 
