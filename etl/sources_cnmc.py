@@ -123,6 +123,7 @@ def level_total(rows, field, fixed=(), dims=None):
         if len(combos) != len(set(combos)) or (not sig and len(rs) != 1):
             continue
         cands.append((len(sig), sum(_num(r[field]) for r in rs), sig, rs))
+    level_total.last_candidates = sorted((c[0], "+".join(c[2]) or "totale", round(c[1] / 1e6, 3), len(c[3])) for c in cands)
     if not cands:
         return None, [], None
     level = min(c[0] for c in cands)
@@ -241,6 +242,12 @@ def extract_monthly(records, retrieved, url):
         for kpi, service, concept, filters in MONTHLY_RULES:
             sel = [r for r in rows if _matches(r, service, concept, filters)]
             value, used, method = level_total(sel, "lineas", (filters or {}).keys(), MONTHLY_DIMS)
+            if (label, end) == periods[-1]:
+                log.append(f"CNMC mensile {kpi} {label}: {'ok ' + method if value is not None else 'nessun totale univoco'}; "
+                           f"ricostruzioni (livello, dimensioni, milioni, righe) {level_total.last_candidates[:8]}")
+                if value is None:
+                    for r in sel[:6]:
+                        log.append("CNMC esempio " + str({k: v for k, v in r.items() if not _na(v) and k != "_id"}))
             if value is None:
                 continue
             f = scale(used[0].get("unidades"), "count")
@@ -276,23 +283,23 @@ def extract_general(records, retrieved, url):
     labels = sorted({str(r.get("tipo_de_ingreso")) for r in rev})
     markets = sorted({str(r.get("tipo_de_mercado")) for r in rev})
     log.append(f"CNMC ricavi: tipi di ricavo {labels[:25]}; mercati {markets[:10]}")
-    mobile = [l for l in labels if ("móvil" in l.lower() or "movil" in l.lower()) and "fij" not in l.lower()]
-    if len(mobile) != 1:
-        log.append(f"CNMC ricavi: etichetta per i ricavi mobili non univoca {mobile}, nessun valore prodotto")
+    wanted = ["Telefonía móvil", "Banda Ancha móvil"]
+    missing = [w for w in wanted if w not in labels]
+    if missing:
+        log.append(f"CNMC ricavi: etichette {missing} assenti, nessun valore prodotto")
         return out, log
-    per_q = {}
+    parts = {}
     for r in rev:
-        if r.get("tipo_de_ingreso") != mobile[0]:
+        if r.get("tipo_de_ingreso") not in wanted or r.get("tipo_de_mercado") != "Servicio minorista":
             continue
         q = quarter(r.get("trimestre"))
         v = _num(r.get("ingresos"))
         f = scale(r.get("unidades"), "money")
-        if not q or v is None or f is None:
-            continue
-        mkt = r.get("tipo_de_mercado")
-        if not _na(mkt) and "minor" not in str(mkt).lower():
-            continue  # solo minorista o totale
-        per_q.setdefault(q, []).append(v * f)
+        if q and v is not None and f is not None:
+            parts.setdefault(q, {}).setdefault(r["tipo_de_ingreso"], []).append(v * f)
+    # un solo valore per etichetta e trimestre, altrimenti ambiguo
+    per_q = {q: [sum(v[0] for v in d.values())] for q, d in parts.items() if set(d) == set(wanted) and all(len(v) == 1 for v in d.values())}
+    mobile = [" + ".join(wanted)]
     clean = {q: v[0] for q, v in per_q.items() if len(v) == 1}
     qs = sorted(clean, key=lambda q: q[1])
     for i in range(3, len(qs)):

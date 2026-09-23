@@ -108,7 +108,8 @@ def test_cnmc_monthly_lines_ftth_and_shares():
     shares = {k.split("|")[1]: v for (k, p), v in by.items() if k.startswith("share|") and p == "2026-07"}
     assert abs(sum(shares.values()) - 100) < 1e-3
     assert abs(shares["Orange"] - 26.7 / 64.8 * 100) < 1e-3
-    assert rows[0]["period_end"] in ("2026-06-30", "2026-07-31") and not log
+    assert rows[0]["period_end"] in ("2026-06-30", "2026-07-31")
+    assert not any("nessun totale" in l or "non riconosciuta" in l for l in log)
 
 
 def test_month_parser_formats():
@@ -138,7 +139,9 @@ def test_general_mobile_revenue_ttm():
     recs = []
     for i, t in enumerate(["2025T1", "2025T2", "2025T3", "2025T4"]):
         base = dict(servicio="Datos generales", concepto="Ingresos", operador="N/A", trimestre=t, unidades="Millones de euros")
-        recs.append(dict(base, tipo_de_ingreso="Comunicaciones móviles", ingresos=1970))
+        recs.append(dict(base, tipo_de_ingreso="Telefonía móvil", tipo_de_mercado="Servicio minorista", ingresos=1500))
+        recs.append(dict(base, tipo_de_ingreso="Banda Ancha móvil", tipo_de_mercado="Servicio minorista", ingresos=470))
+        recs.append(dict(base, tipo_de_ingreso="Telefonía móvil", tipo_de_mercado="Servicio mayorista", ingresos=300))
         recs.append(dict(base, tipo_de_ingreso="Telefonía fija", ingresos=500))
     out, log = sources_cnmc.extract_general(recs, "2026-09-23", "http://x")
     assert len(out) == 1 and abs(float(out[0]["value"]) - 7.88) < 1e-6

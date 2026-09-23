@@ -167,7 +167,8 @@ class Build:
                 if datetime.date.fromisoformat(last["period_end"]) < self.period_end(cur):
                     continue
                 dev = abs(value - cur["value"]) / abs(cur["value"]) if cur["value"] else 0
-                if dev > self.tolerance:
+                tol = kpi.get("tolerance_pct", self.tolerance * 100) / 100
+                if dev > tol:
                     self.anomalies.append(
                         f"{cid} {kpi['label']} {last['period']}: valore automatico {value:g} differisce del {dev:.0%} "
                         f"dal valore curato {cur['value']:g} ({cur['period']}); tenuto il curato, verificare la definizione")

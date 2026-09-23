@@ -62,6 +62,7 @@
       "context": "Dopo la fusione MasOrange (2024), DIGI è il quarto operatore e dal 2025 costruisce una propria rete 4G/5G. Rame spento a maggio 2025, prima in UE.",
       "operator_aliases": {
         "Orange": "MasOrange",
+        "MASORANGE": "MasOrange",
         "OMV": "MVNO"
       }
     },

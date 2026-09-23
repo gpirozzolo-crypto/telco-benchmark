@@ -1,5 +1,5 @@
 {
-  "_note": "Catalogo KPI. origin: auto (World Bank), curated (CSV), derived (calcolato in build). comparability: A = metodologia armonizzata tra paesi, B = fonti nazionali con definizioni simili, C = definizioni divergenti (leggere le note). better: high/low/null, usato solo per l'ordinamento. range: intervallo plausibile per i valori automatici; auto_tolerance_pct: scarto massimo accettato rispetto al valore curato.",
+  "_note": "Catalogo KPI. origin: auto (World Bank), curated (CSV), derived (calcolato in build). comparability: A = metodologia armonizzata tra paesi, B = fonti nazionali con definizioni simili, C = definizioni divergenti (leggere le note). better: high/low/null, usato solo per l'ordinamento. range: intervallo plausibile per i valori automatici; tolerance_pct (per KPI, altrimenti auto_tolerance_pct): scarto massimo accettato rispetto al valore curato.",
   "groups": [
     {
       "id": "context",
@@ -128,7 +128,8 @@
       "range": [
         3,
         250
-      ]
+      ],
+      "tolerance_pct": 5
     },
     {
       "id": "mobile_data",
@@ -142,7 +143,8 @@
       "range": [
         1,
         100
-      ]
+      ],
+      "tolerance_pct": 30
     },
     {
       "id": "fbb_subs",
@@ -156,7 +158,8 @@
       "range": [
         1,
         60
-      ]
+      ],
+      "tolerance_pct": 5
     },
     {
       "id": "ftth_subs",
@@ -170,7 +173,8 @@
       "range": [
         0.001,
         50
-      ]
+      ],
+      "tolerance_pct": 10
     },
     {
       "id": "ftth_share",
@@ -236,7 +240,8 @@
       "range": [
         0.5,
         40
-      ]
+      ],
+      "tolerance_pct": 15
     },
     {
       "id": "arpu_mobile",
@@ -281,7 +286,8 @@
       "range": [
         0.5,
         40
-      ]
+      ],
+      "tolerance_pct": 20
     },
     {
       "id": "capex_intensity",
