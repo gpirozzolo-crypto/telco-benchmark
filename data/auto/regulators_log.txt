@@ -1,7 +1,14 @@
-CNMC: risorsa scelta fe822475-21e6-4caf-a37d-71a499af79f1 ('Telecomunicaciones Mensual', aggiornata 2026-09-23T07:22:40.786693)
+CNMC: per 'mensual' uso la risorsa fe822475-21e6-4caf-a37d-71a499af79f1 ('Telecomunicaciones Mensual', aggiornata 2026-09-23)
 CNMC diagnosi: 15056 record; campi: _id, concepto, contrato, linea_ba_movil, lineas, mes, operador, pais, portabilidades, segmento, servicio, tasa_de_penetracion, tecnologia_de_acceso, terminal_de_telefonia_movil, tipo_de_ba_mayorista, tipo_de_portabilidad, unidades
-CNMC diagnosi: trimestri ['None'] ... ['None']
+CNMC diagnosi: trimestri ['2007-01', '2007-02', '2007-03'] ... ['2026-05', '2026-06', '2026-07']
 CNMC diagnosi: servizio/concetto più frequenti [(('Banda ancha fija minorista', 'Líneas'), 3264), (('Telefonía fija', 'Líneas'), 2751), (('Telefonía móvil', 'Portabilidades'), 2689), (('Telefonía móvil', 'Líneas'), 2685), (('Banda ancha fija mayorista', 'Líneas'), 1743), (('Banda Ancha móvil', 'Líneas'), 1689), (('Telefonía fija', 'Portabilidades'), 235)]
 CNMC diagnosi: operatori più frequenti [('N/A', 2412), ('Movistar', 2329), ('Vodafone', 2162), ('Orange', 1891), ('DIGI', 1118), ('OMV', 1019)]
 CNMC diagnosi: unità [('Unidades', 15056)]
+CNMC: per 'trimestral' uso la risorsa 73e962dc-ab8f-4994-81c2-352146e1f7c0 ('Telecomunicaciones Trimestral Datos Generales', aggiornata 2026-07-16)
+CNMC trimestrale: nessun ricavo o traffico estratto
+CNMC diagnosi: 3275 record; campi: _id, concepto, empleados_por_operador, ingresos, ingresos_por_operador, operador, pais, paquetes, servicio, tipo_de_ingreso, tipo_de_mercado, tipo_de_paquete, trimestre, unidades
+CNMC diagnosi: trimestri ['2005T1', '2005T2', '2005T3'] ... ['2025T3', '2025T4', '2026T1']
+CNMC diagnosi: servizio/concetto più frequenti [(('Datos generales', 'Ingresos'), 2293), (('Datos generales', 'Número de empleados'), 666), (('Datos generales', 'Paquetes'), 316)]
+CNMC diagnosi: operatori più frequenti [('N/A', 1717), ('Movistar', 252), ('Resto', 252), ('Vodafone', 252), ('Orange', 228), ('DIGI', 195)]
+CNMC diagnosi: unità [('Millones de euros', 2293), ('Unidades', 982)]
 cnmc_api: errore nessun valore estratto - mantengo i valori precedenti
