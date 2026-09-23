@@ -1,6 +1,6 @@
 CNMC: per 'mensual' uso la risorsa fe822475-21e6-4caf-a37d-71a499af79f1 ('Telecomunicaciones Mensual', aggiornata 2026-09-23)
 CNMC mensile mobile_subs 2026-07: ok somma per terminal_de_telefonia_movil; ricostruzioni (livello, dimensioni, milioni, righe) [(1, 'terminal_de_telefonia_movil', 57.673, 1)]
-CNMC mensile fbb_subs 2026-07: nessun totale univoco; ricostruzioni (livello, dimensioni, milioni, righe) []
-CNMC mensile ftth_subs 2026-07: nessun totale univoco; ricostruzioni (livello, dimensioni, milioni, righe) []
+CNMC mensile fbb_subs 2026-07: ok somma degli operatori DIGI, MASORANGE, Movistar, Resto, Vodafone; ricostruzioni (livello, dimensioni, milioni, righe) [(1, 'tecnologia_de_acceso', 2.681, 3)]
+CNMC mensile ftth_subs 2026-07: ok somma degli operatori DIGI, MASORANGE, Movistar, Resto, Vodafone; ricostruzioni (livello, dimensioni, milioni, righe) [(0, 'totale', 1.778, 1)]
 CNMC: per 'trimestral' uso la risorsa 73e962dc-ab8f-4994-81c2-352146e1f7c0 ('Telecomunicaciones Trimestral Datos Generales', aggiornata 2026-07-16)
 CNMC ricavi: tipi di ricavo ['Alquiler de circuitos', 'Banda Ancha móvil', 'Banda ancha fija', 'Banda ancha fija mayorista', 'Comunicaciones de Empresa', 'Contenidos audiovisuales', 'Interconexión fija', 'Interconexión móvil', 'Otros servicios mayoristas', 'Otros servicios minoristas', 'Servicios audiovisuales', 'Servicios de información telefónica', 'Telefonía fija', 'Telefonía móvil', 'Transmisión de datos', 'Transporte y difusión de la señal audiovisual', 'Venta y alquiler de terminales']; mercati ['Servicio mayorista', 'Servicio minorista']
