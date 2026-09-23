@@ -1,0 +1,347 @@
+{
+  "_note": "Catalogo KPI. origin: auto (World Bank), curated (CSV), derived (calcolato in build). comparability: A = metodologia armonizzata tra paesi, B = fonti nazionali con definizioni simili, C = definizioni divergenti (leggere le note). better: high/low/null, usato solo per l'ordinamento. range: intervallo plausibile per i valori automatici; auto_tolerance_pct: scarto massimo accettato rispetto al valore curato.",
+  "groups": [
+    {
+      "id": "context",
+      "label": "Contesto"
+    },
+    {
+      "id": "demand",
+      "label": "Domanda"
+    },
+    {
+      "id": "structure",
+      "label": "Struttura di mercato"
+    },
+    {
+      "id": "economics",
+      "label": "Economics"
+    },
+    {
+      "id": "investment",
+      "label": "Investimenti"
+    },
+    {
+      "id": "network",
+      "label": "Rete"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "population",
+      "group": "context",
+      "label": "Popolazione",
+      "unit": "mln ab.",
+      "decimals": 1,
+      "origin": "auto",
+      "wb": "SP.POP.TOTL",
+      "scale": 1e-06,
+      "comparability": "A",
+      "better": null
+    },
+    {
+      "id": "density",
+      "group": "context",
+      "label": "Densità",
+      "unit": "ab./km²",
+      "decimals": 0,
+      "origin": "auto",
+      "wb": "EN.POP.DNST",
+      "comparability": "A",
+      "better": null
+    },
+    {
+      "id": "urban_pop",
+      "group": "context",
+      "label": "Popolazione urbana",
+      "unit": "%",
+      "decimals": 1,
+      "origin": "auto",
+      "wb": "SP.URB.TOTL.IN.ZS",
+      "comparability": "A",
+      "better": null
+    },
+    {
+      "id": "gdp_pc",
+      "group": "context",
+      "label": "PIL pro capite",
+      "unit": "US$",
+      "decimals": 0,
+      "origin": "auto",
+      "wb": "NY.GDP.PCAP.CD",
+      "comparability": "A",
+      "better": "high"
+    },
+    {
+      "id": "gdp_pc_ppp",
+      "group": "context",
+      "label": "PIL pro capite PPP",
+      "unit": "US$ PPP",
+      "decimals": 0,
+      "origin": "auto",
+      "wb": "NY.GDP.PCAP.PP.CD",
+      "comparability": "A",
+      "better": "high"
+    },
+    {
+      "id": "mobile_per100",
+      "group": "demand",
+      "label": "Abbonamenti mobili ogni 100 ab.",
+      "unit": "",
+      "decimals": 0,
+      "origin": "auto",
+      "wb": "IT.CEL.SETS.P2",
+      "comparability": "A",
+      "better": null
+    },
+    {
+      "id": "fbb_per100",
+      "group": "demand",
+      "label": "Banda larga fissa ogni 100 ab.",
+      "unit": "",
+      "decimals": 1,
+      "origin": "auto",
+      "wb": "IT.NET.BBND.P2",
+      "comparability": "A",
+      "better": "high"
+    },
+    {
+      "id": "internet_users",
+      "group": "demand",
+      "label": "Utenti internet",
+      "unit": "% pop.",
+      "decimals": 1,
+      "origin": "auto",
+      "wb": "IT.NET.USER.ZS",
+      "comparability": "A",
+      "better": "high"
+    },
+    {
+      "id": "mobile_subs",
+      "group": "demand",
+      "label": "SIM mobili (escl. M2M)",
+      "unit": "mln",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "B",
+      "better": null,
+      "range": [
+        3,
+        250
+      ]
+    },
+    {
+      "id": "mobile_data",
+      "group": "demand",
+      "label": "Traffico dati mobile per SIM",
+      "unit": "GB/mese",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "C",
+      "better": "high",
+      "range": [
+        1,
+        100
+      ]
+    },
+    {
+      "id": "fbb_subs",
+      "group": "demand",
+      "label": "Linee banda larga fissa",
+      "unit": "mln",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "B",
+      "better": null,
+      "range": [
+        1,
+        60
+      ]
+    },
+    {
+      "id": "ftth_subs",
+      "group": "demand",
+      "label": "Linee FTTH",
+      "unit": "mln",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "B",
+      "better": null,
+      "range": [
+        0.1,
+        50
+      ]
+    },
+    {
+      "id": "ftth_share",
+      "group": "demand",
+      "label": "Linee fisse in fibra (FTTH)",
+      "unit": "%",
+      "decimals": 1,
+      "origin": "derived",
+      "comparability": "B",
+      "better": "high"
+    },
+    {
+      "id": "mnos",
+      "group": "structure",
+      "label": "Operatori di rete mobile",
+      "unit": "n.",
+      "decimals": 0,
+      "origin": "derived",
+      "comparability": "A",
+      "better": null
+    },
+    {
+      "id": "hhi_mobile",
+      "group": "structure",
+      "label": "Concentrazione mobile (HHI)",
+      "unit": "punti",
+      "decimals": 0,
+      "origin": "derived",
+      "comparability": "C",
+      "better": "low"
+    },
+    {
+      "id": "leader_share",
+      "group": "structure",
+      "label": "Quota del primo operatore",
+      "unit": "%",
+      "decimals": 1,
+      "origin": "derived",
+      "comparability": "C",
+      "better": null
+    },
+    {
+      "id": "telecom_rev",
+      "group": "economics",
+      "label": "Ricavi del settore",
+      "unit": "€ mld",
+      "decimals": 1,
+      "origin": "curated",
+      "money": true,
+      "comparability": "C",
+      "better": null
+    },
+    {
+      "id": "mobile_rev",
+      "group": "economics",
+      "label": "Ricavi mobili retail",
+      "unit": "€ mld",
+      "decimals": 1,
+      "origin": "curated",
+      "money": true,
+      "comparability": "B",
+      "better": null,
+      "range": [
+        0.5,
+        40
+      ]
+    },
+    {
+      "id": "arpu_mobile",
+      "group": "economics",
+      "label": "ARPU mobile",
+      "unit": "€/mese",
+      "decimals": 2,
+      "origin": "derived",
+      "comparability": "B",
+      "better": "high"
+    },
+    {
+      "id": "rev_per_capita",
+      "group": "economics",
+      "label": "Ricavi settore per abitante",
+      "unit": "€/anno",
+      "decimals": 0,
+      "origin": "derived",
+      "comparability": "C",
+      "better": null
+    },
+    {
+      "id": "rev_gdp",
+      "group": "economics",
+      "label": "Ricavi settore su PIL",
+      "unit": "%",
+      "decimals": 2,
+      "origin": "derived",
+      "comparability": "C",
+      "better": null
+    },
+    {
+      "id": "capex",
+      "group": "investment",
+      "label": "Investimenti (capex)",
+      "unit": "€ mld",
+      "decimals": 1,
+      "origin": "curated",
+      "money": true,
+      "comparability": "B",
+      "better": null,
+      "range": [
+        0.5,
+        40
+      ]
+    },
+    {
+      "id": "capex_intensity",
+      "group": "investment",
+      "label": "Capex su ricavi",
+      "unit": "%",
+      "decimals": 1,
+      "origin": "derived",
+      "comparability": "C",
+      "better": "high"
+    },
+    {
+      "id": "capex_per_capita",
+      "group": "investment",
+      "label": "Capex per abitante",
+      "unit": "€",
+      "decimals": 0,
+      "origin": "derived",
+      "comparability": "B",
+      "better": "high"
+    },
+    {
+      "id": "cov_5g",
+      "group": "network",
+      "label": "Copertura 5G",
+      "unit": "% famiglie",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "A",
+      "better": "high"
+    },
+    {
+      "id": "cov_fttp",
+      "group": "network",
+      "label": "Copertura FTTP",
+      "unit": "% famiglie",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "A",
+      "better": "high"
+    },
+    {
+      "id": "speed_mobile",
+      "group": "network",
+      "label": "Velocità mobile mediana",
+      "unit": "Mbps",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "A",
+      "better": "high"
+    }
+  ],
+  "definitions": {
+    "arpu_mobile": "Ricavi mobili retail / SIM escl. M2M / 12. Verifica: per Francia e Regno Unito il calcolo coincide con l'ARPU pubblicato dal regolatore (14,30 € e 13,24 £).",
+    "hhi_mobile": "Somma dei quadrati delle quote (0-10.000). Sopra 2.500 = mercato molto concentrato secondo le linee guida antitrust. La base delle quote varia per paese (vedi note).",
+    "rev_gdp": "Ricavi del settore convertiti in euro / PIL in euro (ultimo anno disponibile di ciascuno).",
+    "capex_intensity": "Capex / ricavi del settore. Il perimetro dei ricavi varia (retail o retail+wholesale): confrontare con cautela.",
+    "rev_per_capita": "Ricavi del settore / popolazione.",
+    "capex_per_capita": "Capex / popolazione.",
+    "ftth_share": "Linee FTTH / linee banda larga fissa."
+  },
+  "auto_tolerance_pct": 35
+}

@@ -1,0 +1,79 @@
+{
+  "_note": "Per aggiungere un paese: aggiungi un oggetto qui (iso2 + iso3 per World Bank), poi le righe nei CSV in data/curated/. Il resto (fetch, calcoli, sito) si adatta da solo.",
+  "countries": [
+    {
+      "id": "IT",
+      "iso3": "ITA",
+      "name": "Italia",
+      "color": "#0E7C66",
+      "land_km2": 295717,
+      "currency": "EUR",
+      "mnos": [
+        "TIM",
+        "Fastweb + Vodafone",
+        "WindTre",
+        "Iliad"
+      ],
+      "context": "Fastweb e Vodafone Italia operano come gruppo unico; FiberCop è certificato operatore solo wholesale. Iliad resta il principale sfidante per crescita di quota."
+    },
+    {
+      "id": "DE",
+      "iso3": "DEU",
+      "name": "Germania",
+      "color": "#B26B00",
+      "land_km2": 349390,
+      "currency": "EUR",
+      "mnos": [
+        "Deutsche Telekom",
+        "Vodafone",
+        "Telefónica O2",
+        "1&1"
+      ],
+      "context": "1&1 ha completato a fine 2025 la migrazione dei clienti sulla propria rete: dopo oltre 25 anni il mercato torna ad avere quattro reti complete."
+    },
+    {
+      "id": "FR",
+      "iso3": "FRA",
+      "name": "Francia",
+      "color": "#3949AB",
+      "land_km2": 547557,
+      "currency": "EUR",
+      "mnos": [
+        "Orange",
+        "SFR",
+        "Bouygues Telecom",
+        "Free Mobile"
+      ],
+      "context": "A giugno 2026 Bouygues Telecom, Free e Orange hanno siglato un protocollo per rilevare e spartirsi SFR: se approvato, il mercato passerebbe da quattro a tre operatori di rete."
+    },
+    {
+      "id": "ES",
+      "iso3": "ESP",
+      "name": "Spagna",
+      "color": "#C2334D",
+      "land_km2": 499603,
+      "currency": "EUR",
+      "mnos": [
+        "Movistar",
+        "MasOrange",
+        "Vodafone (Zegona)",
+        "DIGI"
+      ],
+      "context": "Dopo la fusione MasOrange (2024), DIGI è il quarto operatore e dal 2025 costruisce una propria rete 4G/5G. Rame spento a maggio 2025, prima in UE."
+    },
+    {
+      "id": "GB",
+      "iso3": "GBR",
+      "name": "Regno Unito",
+      "color": "#6A4C93",
+      "land_km2": 241930,
+      "currency": "GBP",
+      "mnos": [
+        "EE (BT)",
+        "VodafoneThree",
+        "Virgin Media O2"
+      ],
+      "context": "Con la fusione Vodafone-Three (2025) restano tre operatori di rete. VodafoneThree dichiara 28,6 mln di clienti mobili, Virgin Media O2 circa 22,4 mln retail (contratto + prepagato) più 10,4 mln wholesale (giffgaff escluso, Tesco, Sky). BT/EE non pubblica più la base mobile totale: per questo le quote e l'HHI non sono calcolabili da fonte pubblica."
+    }
+  ]
+}

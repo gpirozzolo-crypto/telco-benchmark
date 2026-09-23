@@ -1,0 +1,101 @@
+{
+  "_note": "Registro delle fonti. type=api: aggiornata automaticamente dal workflow. type=curated: aggiornata modificando data/curated/*.csv; il workflow apre una issue quando supera stale_after_days.",
+  "sources": [
+    {
+      "id": "worldbank",
+      "name": "World Bank Open Data (include indicatori ITU)",
+      "url": "https://data.worldbank.org",
+      "type": "api",
+      "cadence": "mensile",
+      "stale_after_days": 45
+    },
+    {
+      "id": "ecb_fx",
+      "name": "BCE - cambi di riferimento, medie annue",
+      "url": "https://data.ecb.europa.eu",
+      "type": "api",
+      "cadence": "mensile",
+      "stale_after_days": 45
+    },
+    {
+      "id": "cnmc_api",
+      "name": "CNMC - dati trimestrali (API CKAN)",
+      "url": "https://data.cnmc.es/telecomunicaciones-y-sector-audiovisual/datos-trimestrales/datos-de-mercados/telecomunicaciones-3",
+      "type": "api",
+      "cadence": "mensile (dati trimestrali)",
+      "stale_after_days": 45
+    },
+    {
+      "id": "arcep_api",
+      "name": "Arcep - Observatoire via data.gouv.fr",
+      "url": "https://www.data.gouv.fr/fr/datasets/observatoire-des-communications-electroniques/",
+      "type": "api",
+      "cadence": "mensile (dati trimestrali)",
+      "stale_after_days": 45
+    },
+    {
+      "id": "ec_digital_decade",
+      "name": "Commissione UE - State of the Digital Decade 2026",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/2026-state-digital-decade-package",
+      "type": "curated",
+      "cadence": "annuale (giugno)",
+      "stale_after_days": 400
+    },
+    {
+      "id": "agcom",
+      "name": "AGCOM - Osservatorio e Relazione annuale",
+      "url": "https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026",
+      "type": "curated",
+      "cadence": "trimestrale",
+      "stale_after_days": 150
+    },
+    {
+      "id": "bnetza",
+      "name": "Bundesnetzagentur - Jahresbericht Telekommunikation 2025",
+      "url": "https://data.bundesnetzagentur.de/Bundesnetzagentur/SharedDocs/Mediathek/Jahresberichte/JB2025TK.pdf",
+      "type": "curated",
+      "cadence": "annuale (giugno)",
+      "stale_after_days": 400
+    },
+    {
+      "id": "arcep",
+      "name": "Arcep - Observatoire des marchés, année 2025",
+      "url": "https://www.arcep.fr/actualites/actualites-et-communiques/detail/n/marche-francais-des-telecoms-280526.html",
+      "type": "curated",
+      "cadence": "annuale (maggio) + trimestrale",
+      "stale_after_days": 400
+    },
+    {
+      "id": "cnmc",
+      "name": "CNMC - Informe económico sectorial 2025",
+      "url": "https://cnmc.es/sites/default/files/6641332.pdf",
+      "type": "curated",
+      "cadence": "annuale (giugno) + mensile",
+      "stale_after_days": 400
+    },
+    {
+      "id": "ofcom",
+      "name": "Ofcom - Communications Market Report 2026 e data update",
+      "url": "https://www.ofcom.org.uk/phones-and-broadband/telecoms-infrastructure/telecommunications-market-data-update",
+      "type": "curated",
+      "cadence": "trimestrale",
+      "stale_after_days": 400
+    },
+    {
+      "id": "ookla",
+      "name": "Ookla Speedtest Global Index (valori riportati da DriftEuropa, CC BY 4.0)",
+      "url": "https://drifteuropa.com/data/data-europe.json",
+      "type": "curated",
+      "cadence": "mensile",
+      "stale_after_days": 200
+    },
+    {
+      "id": "secondary",
+      "name": "Fonti secondarie (stampa di settore, report operatori)",
+      "url": "",
+      "type": "curated",
+      "cadence": "ad hoc",
+      "stale_after_days": 200
+    }
+  ]
+}
