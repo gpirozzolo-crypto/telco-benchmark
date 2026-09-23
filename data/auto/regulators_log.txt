@@ -1,1 +1,7 @@
+CNMC: risorsa scelta fe822475-21e6-4caf-a37d-71a499af79f1 ('Telecomunicaciones Mensual', aggiornata 2026-09-23T07:22:40.786693)
+CNMC diagnosi: 15056 record; campi: _id, concepto, contrato, linea_ba_movil, lineas, mes, operador, pais, portabilidades, segmento, servicio, tasa_de_penetracion, tecnologia_de_acceso, terminal_de_telefonia_movil, tipo_de_ba_mayorista, tipo_de_portabilidad, unidades
+CNMC diagnosi: trimestri ['None'] ... ['None']
+CNMC diagnosi: servizio/concetto più frequenti [(('Banda ancha fija minorista', 'Líneas'), 3264), (('Telefonía fija', 'Líneas'), 2751), (('Telefonía móvil', 'Portabilidades'), 2689), (('Telefonía móvil', 'Líneas'), 2685), (('Banda ancha fija mayorista', 'Líneas'), 1743), (('Banda Ancha móvil', 'Líneas'), 1689), (('Telefonía fija', 'Portabilidades'), 235)]
+CNMC diagnosi: operatori più frequenti [('N/A', 2412), ('Movistar', 2329), ('Vodafone', 2162), ('Orange', 1891), ('DIGI', 1118), ('OMV', 1019)]
+CNMC diagnosi: unità [('Unidades', 15056)]
 cnmc_api: errore nessun valore estratto - mantengo i valori precedenti
