@@ -178,6 +178,36 @@ class Build:
                 "note": f"Aggiornato automaticamente: {last['method']}",
             }
 
+    def apply_auto_shares(self):
+        """Quote per operatore dai dati CNMC mensili: sostituiscono le curate se più recenti e coerenti."""
+        grouped = defaultdict(lambda: defaultdict(list))
+        for r in getattr(self, "reg_rows", []):
+            if r["kpi"].startswith("share|") and to_float(r["value"]) is not None:
+                grouped[r["country"]][r["period_end"]].append(r)
+        for cid, periods in grouped.items():
+            end = max(periods)
+            rows = periods[end]
+            aliases = next((c.get("operator_aliases", {}) for c in self.countries if c["id"] == cid), {})
+            items = sorted(({"operator": aliases.get(r["kpi"].split("|", 1)[1], r["kpi"].split("|", 1)[1]), "share": round(float(r["value"]), 2)}
+                            for r in rows), key=lambda x: -x["share"])
+            total = sum(i["share"] for i in items)
+            label = rows[0]["period"]
+            if not 97 <= total <= 103 or len(items) < 3:
+                self.anomalies.append(f"{cid} quote di mercato {label}: somma {total:.1f}% o operatori insufficienti, tenute le curate")
+                continue
+            cur = self.shares.get(cid)
+            if cur:
+                if datetime.date.fromisoformat(end) < self.period_end({"period": cur["period"], "year": re.search(r"\d{4}", cur["period"]).group()}):
+                    continue
+                lead_dev = abs(items[0]["share"] - cur["items"][0]["share"]) / cur["items"][0]["share"]
+                if lead_dev > self.tolerance:
+                    self.anomalies.append(f"{cid} quote di mercato {label}: quota del primo operatore {items[0]['share']}% lontana dalla curata "
+                                          f"{cur['items'][0]['share']}%, tenute le curate")
+                    continue
+            self.shares[cid] = {"basis": "linee mobili (dati mensili CNMC)", "period": label, "source_id": rows[0]["source_id"],
+                                "source_url": rows[0]["source_url"], "retrieved": rows[0]["retrieved"], "confidence": "ufficiale",
+                                "items": items, "covered": round(total, 1)}
+
     # ---------- KPI derivati ----------
     def fallback_context(self):
         """Se l'API non ha ancora fornito PIL pro capite o densità, li ricava da PIL totale e superficie."""
@@ -302,6 +332,7 @@ class Build:
         self.load_curated()
         self.load_regulators()
         self.load_shares()
+        self.apply_auto_shares()
         self.fallback_context()
         self.compute_derived()
         sources, stale = self.freshness()

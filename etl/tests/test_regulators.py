@@ -82,3 +82,36 @@ def test_cnmc_describe_reports_structure():
     lines = sources_cnmc.describe([{"trimestre": "2025T4", "servicio": "X", "concepto": "Y", "operador": "Z", "unidades": "U"}])
     assert "1 record" in lines[0] and "2025T4" in lines[1]
     assert sources_cnmc.describe([])[0].endswith("0 record")
+
+
+def monthly_sample():
+    rows = []
+    for mes in ["2026-06", "2026-07"]:
+        base = dict(mes=mes, pais="España", unidades="Unidades")
+        rows.append(dict(base, servicio="Telefonía móvil", concepto="Líneas", operador="N/A", lineas=64_800_000))
+        for op, v in [("Orange", 26_700_000), ("Movistar", 17_000_000), ("Vodafone", 12_000_000), ("DIGI", 7_600_000), ("OMV", 1_500_000)]:
+            # ogni operatore diviso per segmento: il totale va ricostruito
+            rows.append(dict(base, servicio="Telefonía móvil", concepto="Líneas", operador=op, segmento="Residencial", lineas=v * 0.8))
+            rows.append(dict(base, servicio="Telefonía móvil", concepto="Líneas", operador=op, segmento="Negocios", lineas=v * 0.2))
+        rows.append(dict(base, servicio="Banda ancha fija minorista", concepto="Líneas", operador="N/A", lineas=20_100_000))
+        rows.append(dict(base, servicio="Banda ancha fija minorista", concepto="Líneas", operador="N/A", tecnologia_de_acceso="FTTH", lineas=18_300_000))
+        rows.append(dict(base, servicio="Telefonía móvil", concepto="Portabilidades", operador="N/A", lineas=500_000))
+    return rows
+
+
+def test_cnmc_monthly_lines_ftth_and_shares():
+    rows, log = sources_cnmc.extract_monthly(monthly_sample(), "2026-09-23", "http://x")
+    by = {(r["kpi"], r["period"]): float(r["value"]) for r in rows}
+    assert abs(by[("mobile_subs", "2026-07")] - 64.8) < 1e-6
+    assert abs(by[("fbb_subs", "2026-07")] - 20.1) < 1e-6        # la riga FTTH non deve sommarsi al totale
+    assert abs(by[("ftth_subs", "2026-07")] - 18.3) < 1e-6
+    shares = {k.split("|")[1]: v for (k, p), v in by.items() if k.startswith("share|") and p == "2026-07"}
+    assert abs(sum(shares.values()) - 100) < 1e-3
+    assert abs(shares["Orange"] - 26.7 / 64.8 * 100) < 1e-3
+    assert rows[0]["period_end"] in ("2026-06-30", "2026-07-31") and not log
+
+
+def test_month_parser_formats():
+    for s in ["2026-07", "202607", "2026-07-01", "07/2026", "2026M07", "julio 2026", "2026-07-01T00:00:00"]:
+        assert sources_cnmc.month(s)[0] == "2026-07", s
+    assert sources_cnmc.month("2026-13") is None

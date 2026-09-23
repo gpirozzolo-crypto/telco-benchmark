@@ -80,9 +80,12 @@ def _matches(r, service, concept, filters, national=True):
     return all(r.get(k) == v for k, v in (filters or {}).items())
 
 
-def country_total(rows, field, filters):
+def country_total(rows, field, filters, dims_all=None):
     fixed = set((filters or {}).keys())
-    dims = [d for d in DIMENSIONS if d not in fixed]
+    dims = [d for d in (dims_all or DIMENSIONS) if d not in fixed]
+    # "pais" con un unico valore in tutte le righe (España) non scompone nulla: non va trattato come dimensione
+    if len({str(r.get("pais")) for r in rows}) == 1:
+        dims = [d for d in dims if d != "pais"]
     direct = [r for r in rows if all(_na(r.get(d)) for d in dims) and _num(r.get(field)) is not None]
     if len(direct) == 1:
         return _num(direct[0][field]), direct, "totale diretto"
@@ -155,36 +158,106 @@ def _consecutive(labels):
     return all(b - a == 1 for a, b in zip(idx, idx[1:]))
 
 
+# ---------- dataset mensile "Telecomunicaciones Mensual" ----------
+MONTHLY_DIMS = ["segmento", "contrato", "tecnologia_de_acceso", "linea_ba_movil", "terminal_de_telefonia_movil",
+                "tipo_de_ba_mayorista", "pais", "tipo_de_portabilidad"]
+MONTHLY_RULES = [
+    ("mobile_subs", "Telefonía móvil", "Líneas", None),
+    ("fbb_subs", "Banda ancha fija minorista", "Líneas", None),
+    ("ftth_subs", "Banda ancha fija minorista", "Líneas", {"tecnologia_de_acceso": "FTTH"}),
+]
+MONTHS_ES = {m: i + 1 for i, m in enumerate(["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
+                                               "septiembre", "octubre", "noviembre", "diciembre"])}
+KEEP_MONTHS = 60
+
+
+def month(s):
+    """Accetta 2025-07, 202507, 2025-07-01, 07/2025, 2025M07, julio 2025. Restituisce ('2025-07', fine mese)."""
+    t = str(s or "").strip().lower()
+    y = m = None
+    for pat, yi, mi in [(r"(20\d{2})[-/m]?(\d{1,2})(?:[-/]\d{1,2})?(?:t.*)?", 1, 2), (r"(\d{1,2})[-/](20\d{2})", 2, 1)]:
+        g = re.fullmatch(pat, t)
+        if g:
+            y, m = int(g.group(yi)), int(g.group(mi))
+            break
+    if y is None:
+        g = re.fullmatch(r"([a-záéíóú]+)\s+(?:de\s+)?(20\d{2})", t)
+        if g and g.group(1) in MONTHS_ES:
+            y, m = int(g.group(2)), MONTHS_ES[g.group(1)]
+    if not y or not 1 <= m <= 12:
+        return None
+    end = date(y + (m == 12), m % 12 + 1, 1).toordinal() - 1
+    return f"{y}-{m:02d}", date.fromordinal(end)
+
+
+def extract_monthly(records, retrieved, url):
+    out, log = [], []
+    periods = sorted({month(r.get("mes")) for r in records if month(r.get("mes"))}, key=lambda p: p[1])[-KEEP_MONTHS:]
+    by_period = {p: [] for p in periods}
+    for r in records:
+        p = month(r.get("mes"))
+        if p in by_period:
+            by_period[p].append(r)
+
+    def row(kpi, label, end, value, method):
+        return {"country": "ES", "kpi": kpi, "value": f"{value:.6g}", "period": label, "period_end": end.isoformat(),
+                "frequency": "mensile", "source_id": "cnmc_api", "source_url": url, "retrieved": retrieved, "method": method}
+
+    for (label, end), rows in by_period.items():
+        for kpi, service, concept, filters in MONTHLY_RULES:
+            sel = [r for r in rows if _matches(r, service, concept, filters)]
+            value, used, method = country_total(sel, "lineas", filters, MONTHLY_DIMS)
+            if value is None:
+                continue
+            f = scale(used[0].get("unidades"), "count")
+            if f is None:
+                log.append(f"CNMC mensile {kpi} {label}: unità non riconosciuta '{used[0].get('unidades')}'")
+                continue
+            out.append(row(kpi, label, end, value * f, f"CNMC dati mensili, {method}"))
+    # quote di mercato mobile per operatore: ultimi 13 mesi
+    for (label, end), rows in list(by_period.items())[-13:]:
+        sel = [r for r in rows if _matches(r, "Telefonía móvil", "Líneas", None, national=False) and not _na(r.get("operador"))]
+        totals = {}
+        for op in sorted({str(r["operador"]) for r in sel}):
+            v, _, _ = country_total([r for r in sel if str(r["operador"]) == op], "lineas", None, MONTHLY_DIMS)
+            if v is not None:
+                totals[op] = v
+        total = sum(totals.values())
+        if len(totals) >= 3 and total > 0:
+            for op, v in totals.items():
+                out.append(row(f"share|{op}", label, end, v / total * 100, "CNMC dati mensili, linee mobili per operatore"))
+    return out, log
+
+
 PACKAGE_SEARCH = "https://catalogodatos.cnmc.es/api/3/action/package_search"
 
 
-def find_resource(session, log):
-    """Cerca la versione più recente del dataset 'datos de mercados' di telecomunicazioni.
+def find_resource(session, log, prefer):
+    """Cerca la risorsa più recente di un dataset telecom CNMC il cui titolo contiene `prefer`.
 
-    La CNMC pubblica nuove versioni come nuove risorse: un identificativo fisso può diventare obsoleto.
-    Se la ricerca non trova nulla di convincente, usa l'identificativo noto.
+    La CNMC pubblica nuove versioni come nuove risorse, quindi l'identificativo non va fissato nel codice.
     """
     try:
-        r = session.get(PACKAGE_SEARCH, params={"q": "telecomunicaciones datos trimestrales mercados", "rows": 50}, timeout=60)
+        r = session.get(PACKAGE_SEARCH, params={"q": f"telecomunicaciones {prefer}", "rows": 50}, timeout=60)
         r.raise_for_status()
         best = None
         for pkg in r.json()["result"]["results"]:
-            text = " ".join([pkg.get("title") or "", pkg.get("notes") or ""]).lower()
-            if "telecomunicaciones" not in text or "mercado" not in text or "geogr" in text:
+            title = (pkg.get("title") or "").lower()
+            if "telecomunicaciones" not in title or prefer not in title or "geogr" in title:
                 continue
             for res in pkg.get("resources", []):
                 if not res.get("datastore_active"):
                     continue
                 stamp = res.get("last_modified") or res.get("created") or ""
                 if best is None or stamp > best[0]:
-                    best = (stamp, res["id"], pkg.get("title"))
+                    best = (stamp, res["id"], pkg.get("title"), pkg.get("name"))
         if best:
-            log.append(f"CNMC: risorsa scelta {best[1]} ('{best[2]}', aggiornata {best[0]})")
-            return best[1]
-        log.append("CNMC: ricerca del dataset senza risultati, uso l'identificativo noto")
+            log.append(f"CNMC: per '{prefer}' uso la risorsa {best[1]} ('{best[2]}', aggiornata {best[0][:10]})")
+            return best[1], f"https://catalogodatos.cnmc.es/dataset/{best[3]}"
+        log.append(f"CNMC: nessun dataset '{prefer}' trovato")
     except Exception as exc:  # noqa: BLE001
-        log.append(f"CNMC: ricerca del dataset fallita ({exc}), uso l'identificativo noto")
-    return MARKETS_RESOURCE
+        log.append(f"CNMC: ricerca '{prefer}' fallita ({exc})")
+    return None, None
 
 
 def describe(records):
@@ -193,7 +266,7 @@ def describe(records):
     if not records:
         return ["CNMC diagnosi: l'API ha restituito 0 record"]
     keys = sorted({k for r in records[:200] for k in r})
-    trims = sorted({str(r.get("trimestre")) for r in records})
+    trims = sorted({str(r.get("trimestre") or r.get("mes")) for r in records})
     pairs = Counter((r.get("servicio"), r.get("concepto")) for r in records).most_common(12)
     ops = Counter(str(r.get("operador")) for r in records).most_common(6)
     units = Counter(str(r.get("unidades")) for r in records).most_common(8)
@@ -205,13 +278,28 @@ def describe(records):
 
 
 def run(session, retrieved):
-    log = []
-    resource = find_resource(session, log)
-    records = fetch_records(session, resource)
-    rows, l = extract(records, retrieved)
-    log += l
-    if not rows:
-        log += describe(records)
+    """Mensile: linee mobili, fisse, FTTH, quote. Trimestrale: ricavi e traffico (se il dataset si trova)."""
+    log, rows = [], []
+    res, url = find_resource(session, log, "mensual")
+    if res:
+        records = fetch_records(session, res)
+        got, l = extract_monthly(records, retrieved, url)
+        log += l
+        if not got:
+            log += describe(records)
+        rows += got
+    res, url = find_resource(session, log, "trimestral")
+    res = res or MARKETS_RESOURCE
+    try:
+        records = fetch_records(session, res)
+        got, l = extract(records, retrieved)
+        log += l
+        got = [g for g in got if g["kpi"] in ("mobile_rev", "mobile_data")]  # le linee arrivano già dal mensile
+        if not got:
+            log += ["CNMC trimestrale: nessun ricavo o traffico estratto"] + describe(records)
+        rows += got
+    except Exception as exc:  # noqa: BLE001
+        log.append(f"CNMC trimestrale: errore {exc}")
     return rows, log
 
 
