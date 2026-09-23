@@ -1,0 +1,88 @@
+name: Aggiorna dati e pubblica
+
+on:
+  schedule:
+    - cron: "0 5 2 * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Estrai lo zip caricato (se presente)
+        run: |
+          shopt -s nullglob
+          zips=(*.zip)
+          if [ ${#zips[@]} -gt 0 ]; then
+            z="${zips[0]}"
+            tmp=$(mktemp -d)
+            unzip -q "$z" -d "$tmp"
+            src="$tmp"
+            entries=("$tmp"/*)
+            if [ ${#entries[@]} -eq 1 ] && [ -d "${entries[0]}" ]; then src="${entries[0]}"; fi
+            (cd "$src" && tar --exclude='./.github' --exclude='./dist' -cf - .) | tar -xf -
+            rm -f -- *.zip
+            git config user.name "telco-benchmark-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git diff --cached --quiet || git commit -m "Estratto il pacchetto $z"
+            git push origin HEAD:main
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installa e testa
+        run: |
+          pip install -r requirements.txt
+          python -m pytest -q etl/tests
+
+      - name: Scarica i dati automatici (World Bank, BCE, CNMC, Arcep)
+        working-directory: etl
+        run: python update_all.py
+
+      - name: Genera il sito
+        run: python etl/build.py
+
+      - name: Salva i dati aggiornati nel repository
+        run: |
+          git config user.name "telco-benchmark-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/auto
+          git diff --cached --quiet || git commit -m "Dati automatici aggiornati $(date -u +%F)"
+          git push origin HEAD:main
+
+      - name: Segnala i dati da controllare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python etl/open_stale_issue.py
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
