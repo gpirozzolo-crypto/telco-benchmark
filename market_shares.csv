@@ -1,0 +1,21 @@
+country,operator,share,basis,period,source_id,source_url,retrieved,confidence
+IT,Fastweb + Vodafone,25.2,SIM human,Q1 2026,agcom,https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026,2026-09-23,ufficiale
+IT,WindTre,23.6,SIM human,Q1 2026,agcom,https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026,2026-09-23,ufficiale
+IT,TIM,22.3,SIM human,Q1 2026,agcom,https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026,2026-09-23,ufficiale
+IT,Iliad,16.1,SIM human,Q1 2026,agcom,https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026,2026-09-23,ufficiale
+IT,PostePay,5.6,SIM human,Q1 2026,agcom,https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026,2026-09-23,ufficiale
+IT,Coop Voce,3.0,SIM human,Q1 2026,agcom,https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026,2026-09-23,ufficiale
+IT,Lyca Mobile,1.4,SIM human,Q1 2026,agcom,https://www.agcom.it/comunicazione/comunicati-stampa/osservatorio-sulle-comunicazioni-n-2-2026,2026-09-23,ufficiale
+DE,Deutsche Telekom,35.9,contratti postpaid dei 4 MNO,Q1 2026,secondary,https://www.smartweb.de/mobilfunk-report-deutschland-2025,2026-09-23,stima
+DE,Vodafone,24.8,contratti postpaid dei 4 MNO,Q1 2026,secondary,https://www.smartweb.de/mobilfunk-report-deutschland-2025,2026-09-23,stima
+DE,Telefónica O2,23.2,contratti postpaid dei 4 MNO,Q1 2026,secondary,https://www.smartweb.de/mobilfunk-report-deutschland-2025,2026-09-23,stima
+DE,1&1,16.1,contratti postpaid dei 4 MNO,Q1 2026,secondary,https://www.smartweb.de/mobilfunk-report-deutschland-2025,2026-09-23,stima
+FR,Orange,32,parco mobile (stima),Q4 2025,secondary,https://selectra.info/telecom/fournisseurs,2026-09-23,stima
+FR,Free Mobile,25,parco mobile (stima),Q4 2025,secondary,https://selectra.info/telecom/fournisseurs,2026-09-23,stima
+FR,SFR,23,parco mobile (stima),Q4 2025,secondary,https://selectra.info/telecom/fournisseurs,2026-09-23,stima
+FR,Bouygues Telecom,20,parco mobile (stima),Q4 2025,secondary,https://selectra.info/telecom/fournisseurs,2026-09-23,stima
+ES,MasOrange,41.24,linee mobili,2025-12,cnmc,https://www.mobileworldlive.com/?p=496661,2026-09-23,ufficiale
+ES,Movistar,26.24,linee mobili,2025-12,cnmc,https://www.mobileworldlive.com/?p=496661,2026-09-23,ufficiale
+ES,Vodafone,18.50,linee mobili,2025-12,cnmc,https://www.mobileworldlive.com/?p=496661,2026-09-23,ufficiale
+ES,DIGI,11.72,linee mobili,2025-12,cnmc,https://www.mobileworldlive.com/?p=496661,2026-09-23,ufficiale
+ES,MVNO,2.30,linee mobili,2025-12,cnmc,https://www.mobileworldlive.com/?p=496661,2026-09-23,ufficiale
