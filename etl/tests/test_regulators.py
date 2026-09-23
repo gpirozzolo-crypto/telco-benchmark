@@ -76,3 +76,9 @@ def test_arcep_workbook_parsing():
 def test_arcep_capex_millions_to_billions():
     assert sources_arcep.scale("€ million", "money") == 1e-3
     assert sources_arcep.scale("strange", "money") is None
+
+
+def test_cnmc_describe_reports_structure():
+    lines = sources_cnmc.describe([{"trimestre": "2025T4", "servicio": "X", "concepto": "Y", "operador": "Z", "unidades": "U"}])
+    assert "1 record" in lines[0] and "2025T4" in lines[1]
+    assert sources_cnmc.describe([])[0].endswith("0 record")

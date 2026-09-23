@@ -155,10 +155,70 @@ def _consecutive(labels):
     return all(b - a == 1 for a, b in zip(idx, idx[1:]))
 
 
-def fetch_records(session):
+PACKAGE_SEARCH = "https://catalogodatos.cnmc.es/api/3/action/package_search"
+
+
+def find_resource(session, log):
+    """Cerca la versione più recente del dataset 'datos de mercados' di telecomunicazioni.
+
+    La CNMC pubblica nuove versioni come nuove risorse: un identificativo fisso può diventare obsoleto.
+    Se la ricerca non trova nulla di convincente, usa l'identificativo noto.
+    """
+    try:
+        r = session.get(PACKAGE_SEARCH, params={"q": "telecomunicaciones datos trimestrales mercados", "rows": 50}, timeout=60)
+        r.raise_for_status()
+        best = None
+        for pkg in r.json()["result"]["results"]:
+            text = " ".join([pkg.get("title") or "", pkg.get("notes") or ""]).lower()
+            if "telecomunicaciones" not in text or "mercado" not in text or "geogr" in text:
+                continue
+            for res in pkg.get("resources", []):
+                if not res.get("datastore_active"):
+                    continue
+                stamp = res.get("last_modified") or res.get("created") or ""
+                if best is None or stamp > best[0]:
+                    best = (stamp, res["id"], pkg.get("title"))
+        if best:
+            log.append(f"CNMC: risorsa scelta {best[1]} ('{best[2]}', aggiornata {best[0]})")
+            return best[1]
+        log.append("CNMC: ricerca del dataset senza risultati, uso l'identificativo noto")
+    except Exception as exc:  # noqa: BLE001
+        log.append(f"CNMC: ricerca del dataset fallita ({exc}), uso l'identificativo noto")
+    return MARKETS_RESOURCE
+
+
+def describe(records):
+    """Riassunto della struttura dei record, scritto nel log quando l'estrazione non produce nulla."""
+    from collections import Counter
+    if not records:
+        return ["CNMC diagnosi: l'API ha restituito 0 record"]
+    keys = sorted({k for r in records[:200] for k in r})
+    trims = sorted({str(r.get("trimestre")) for r in records})
+    pairs = Counter((r.get("servicio"), r.get("concepto")) for r in records).most_common(12)
+    ops = Counter(str(r.get("operador")) for r in records).most_common(6)
+    units = Counter(str(r.get("unidades")) for r in records).most_common(8)
+    return [f"CNMC diagnosi: {len(records)} record; campi: {', '.join(keys)}",
+            f"CNMC diagnosi: trimestri {trims[:3]} ... {trims[-3:]}",
+            f"CNMC diagnosi: servizio/concetto più frequenti {pairs}",
+            f"CNMC diagnosi: operatori più frequenti {ops}",
+            f"CNMC diagnosi: unità {units}"]
+
+
+def run(session, retrieved):
+    log = []
+    resource = find_resource(session, log)
+    records = fetch_records(session, resource)
+    rows, l = extract(records, retrieved)
+    log += l
+    if not rows:
+        log += describe(records)
+    return rows, log
+
+
+def fetch_records(session, resource=MARKETS_RESOURCE):
     out, offset = [], 0
     while True:
-        r = session.get(DATASTORE, params={"resource_id": MARKETS_RESOURCE, "limit": 1000, "offset": offset}, timeout=90)
+        r = session.get(DATASTORE, params={"resource_id": resource, "limit": 5000, "offset": offset}, timeout=120)
         r.raise_for_status()
         result = r.json()["result"]
         batch = result.get("records", [])

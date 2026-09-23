@@ -23,7 +23,7 @@ def main():
     session.headers.update({"User-Agent": "telco-benchmark-etl (+github)"})
     fresh, ok, log = [], set(), []
     jobs = {
-        "cnmc_api": lambda: sources_cnmc.extract(sources_cnmc.fetch_records(session), today),
+        "cnmc_api": lambda: sources_cnmc.run(session, today),
         "arcep_api": lambda: sources_arcep.fetch(session, today),
     }
     for sid, job in jobs.items():

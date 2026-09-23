@@ -21,15 +21,16 @@ Se una fonte automatica non risponde, resta l'ultimo dato valido. Un valore dei 
 
 I report dei regolatori non hanno API: un'automazione che li legge dai PDF si romperebbe a ogni cambio di impaginazione. Per questo la parte curata è un CSV versionato, dove ogni riga ha fonte, periodo, data di raccolta e nota.
 
-## Messa online (una volta sola, circa 10 minuti)
+## Messa online (una volta sola, circa 5 minuti, tutto dal browser)
 
-1. Crea un repository **pubblico** su GitHub, per esempio nell'account aziendale. L'account deve essere un'organizzazione o un utente condiviso, così il sito non dipende da una persona.
-2. Carica il contenuto di questa cartella (trascina i file nella pagina del repository oppure usa `git push`).
-3. Vai in **Settings → Pages** e, in *Build and deployment → Source*, scegli **GitHub Actions**.
-4. Vai in **Actions → Aggiorna dati e pubblica → Run workflow**. Il primo run scarica tutti gli indicatori World Bank e i cambi BCE, genera il sito e lo pubblica.
-5. L'indirizzo del sito compare in *Settings → Pages* (di solito `https://<account>.github.io/<repository>/`). Per un dominio proprio, aggiungilo nella stessa pagina.
+1. Crea un repository **pubblico** su GitHub con l'opzione "Add a README" attiva.
+2. In **Settings → Pages**, alla voce Source, scegli **GitHub Actions**.
+3. **Add file → Upload files**: carica lo zip del progetto **così com'è, senza estrarlo**, e fai *Commit changes*.
+4. **Add file → Create new file**: come nome scrivi `.github/workflows/update.yml`, incolla il contenuto del file omonimo presente nello zip e fai *Commit changes*.
 
-Da quel momento il sito si aggiorna da solo ogni mese, e a ogni modifica dei file in `data/curated/`, `config/`, `site/` o `etl/`.
+Il workflow parte da solo: estrae lo zip nelle cartelle giuste, cancella lo zip, scarica i dati, genera il sito e lo pubblica. L'indirizzo compare in *Settings → Pages* (di solito `https://<account>.github.io/<repository>/`).
+
+**Aggiornare il codice in futuro**: carica il nuovo zip con *Upload files*. Il workflow lo estrae e ripubblica. Unica eccezione: il file del workflow va modificato a mano, perché GitHub non permette alle automazioni di cambiare se stesse.
 
 ## Aggiornare un dato curato
 
