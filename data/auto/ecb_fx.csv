@@ -1,7 +1,25 @@
 currency,year,eur_per_unit,source_id,retrieved,via
-USD,2023,0.9248,ecb_fx,2026-09-23,seed approssimato - sovrascritto al primo aggiornamento
-USD,2024,0.9239,ecb_fx,2026-09-23,seed approssimato - sovrascritto al primo aggiornamento
-USD,2025,0.8850,ecb_fx,2026-09-23,seed approssimato - sovrascritto al primo aggiornamento
-GBP,2024,1.1812,ecb_fx,2026-09-23,seed approssimato - sovrascritto al primo aggiornamento
-GBP,2025,1.1670,ecb_fx,2026-09-23,seed approssimato - sovrascritto al primo aggiornamento
-GBP,2026,1.1500,ecb_fx,2026-09-23,seed approssimato - sovrascritto al primo aggiornamento
+GBP,2014,1.240510,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2015,1.377723,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2016,1.220281,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2017,1.140674,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2018,1.130319,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2019,1.139250,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2020,1.123969,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2021,1.163327,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2022,1.172662,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2023,1.149707,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2024,1.181172,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+GBP,2025,1.167144,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2014,0.752728,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2015,0.901296,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2016,0.903421,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2017,0.885206,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2018,0.846773,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2019,0.893276,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2020,0.875506,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2021,0.845494,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2022,0.949624,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2023,0.924840,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2024,0.923890,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual
+USD,2025,0.884969,ecb_fx,2026-09-23,data-api.ecb.europa.eu EXR annual

@@ -1,0 +1,1 @@
+cnmc_api: errore nessun valore estratto - mantengo i valori precedenti
