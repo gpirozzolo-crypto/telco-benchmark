@@ -105,8 +105,9 @@ I casi principali sono questi:
 
 ## Dati mancanti
 
+- **Quote di mercato mobile di Stati Uniti, Canada, Giappone, Corea del Sud, Australia, Cina, Arabia Saudita e Sudafrica**: nessuna fonte ufficiale recente e verificabile (settembre 2026). Negli Stati Uniti la FCC non le pubblica e gli operatori contano i clienti in modi diversi; per il Giappone i dati ministeriali accessibili sono fermi al 2023.
+
 - **Quote di mercato mobile del Regno Unito (e quindi HHI)**: VodafoneThree e Virgin Media O2 pubblicano la propria base clienti, BT/EE no. Ofcom non pubblica quote per operatore. Il dato si ottiene solo da fonti a pagamento (per esempio GSMA Intelligence) o da un'eventuale ripresa della disclosure di BT.
-- **Velocità fissa mediana**: fonte Ookla, da aggiungere.
 - **Capex del Regno Unito**: è del 2024 (stima Ofcom, prezzi 2024), non del 2025. Il capex su ricavi confronta quindi capex 2024 con ricavi 2025.
 - **Indicatori World Bank**: popolazione urbana, PIL PPP, abbonamenti ogni 100 abitanti e utenti internet si popolano al primo run del workflow.
 

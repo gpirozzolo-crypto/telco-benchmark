@@ -83,8 +83,8 @@
     },
     {
       "id": "ookla",
-      "name": "Ookla Speedtest Global Index (valori riportati da DriftEuropa, CC BY 4.0)",
-      "url": "https://drifteuropa.com/data/data-europe.json",
+      "name": "Ookla Speedtest Global Index (valori mensili riportati da Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/List_of_countries_by_Internet_connection_speeds",
       "type": "curated",
       "cadence": "mensile",
       "stale_after_days": 200

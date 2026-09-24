@@ -407,6 +407,16 @@
       "origin": "curated",
       "comparability": "A",
       "better": "high"
+    },
+    {
+      "id": "speed_fixed",
+      "group": "network",
+      "label": "Velocità fissa mediana",
+      "unit": "Mbps",
+      "decimals": 1,
+      "origin": "curated",
+      "comparability": "A",
+      "better": "high"
     }
   ],
   "definitions": {
