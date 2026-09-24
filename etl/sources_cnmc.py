@@ -331,10 +331,14 @@ def extract_general(records, retrieved, url):
 
 
 def wholesale_ttm(rev, retrieved, url, log):
-    """Ricavi wholesale: somma di tutti i tipi di ricavo sul mercato mayorista, ultimi 4 trimestri."""
+    """Ricavi wholesale e retail con lo stesso perimetro: somma dei tipi di ricavo per mercato, ultimi 4 trimestri."""
+    return market_ttm(rev, retrieved, url, log, "mayorista", "rev_wholesale") + market_ttm(rev, retrieved, url, log, "minorista", "rev_retail")
+
+
+def market_ttm(rev, retrieved, url, log, market, kpi):
     parts = {}
     for r in rev:
-        if "mayorista" not in str(r.get("tipo_de_mercado")).lower():
+        if market not in str(r.get("tipo_de_mercado")).lower():
             continue
         q = quarter(r.get("trimestre"))
         v = _num(r.get("ingresos"))
@@ -344,16 +348,16 @@ def wholesale_ttm(rev, retrieved, url, log):
     # un solo valore per tipo di ricavo e trimestre, altrimenti il trimestre è ambiguo
     clean = {q: sum(v[0] for v in d.values()) for q, d in parts.items() if all(len(v) == 1 for v in d.values())}
     if not clean:
-        log.append("CNMC wholesale: nessun ricavo sul mercato mayorista ricostruibile")
+        log.append(f"CNMC {kpi}: nessun ricavo sul mercato {market} ricostruibile")
         return []
     qs = sorted(clean, key=lambda q: q[1])
     out = []
     for i in range(3, len(qs)):
         w = qs[i - 3:i + 1]
         if _consecutive([x[0] for x in w]):
-            out.append({"country": "ES", "kpi": "rev_wholesale", "value": f"{sum(clean[x] for x in w):.6g}", "period": f"12 mesi a {w[-1][0]}",
+            out.append({"country": "ES", "kpi": kpi, "value": f"{sum(clean[x] for x in w):.6g}", "period": f"12 mesi a {w[-1][0]}",
                         "period_end": w[-1][1].isoformat(), "frequency": "annuale mobile", "source_id": "cnmc_api", "source_url": url,
-                        "retrieved": retrieved, "method": "CNMC Datos generales, somma dei ricavi sul mercato mayorista, 4 trimestri"})
+                        "retrieved": retrieved, "method": f"CNMC Datos generales, somma dei ricavi sul mercato {market}, 4 trimestri"})
     return out
 
 

@@ -171,3 +171,5 @@ def test_general_wholesale_ttm():
     out, _ = sources_cnmc.extract_general(recs, "2026-09-24", "http://x")
     w = [r for r in out if r["kpi"] == "rev_wholesale"]
     assert len(w) == 1 and abs(float(w[0]["value"]) - 3.0) < 1e-9
+    rt = [r for r in out if r["kpi"] == "rev_retail"]
+    assert len(rt) == 1 and abs(float(rt[0]["value"]) - 7.88) < 1e-9
