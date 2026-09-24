@@ -83,7 +83,9 @@ Per i Big 5 il sito mostra ricavi retail consumer e business, ricavi wholesale e
 - **Francia**: Arcep separa consumer e business nei soli ricavi dei servizi, esclusi i terminali (dati 2024). Il wholesale non è pubblicato nello stesso rapporto.
 - **Germania**: la Bundesnetzagentur separa solo retail e wholesale; il retail include i terminali.
 - **Regno Unito**: Ofcom separa retail e wholesale.
-- **Spagna**: retail curato; il wholesale arriva in automatico dal dataset CNMC "Datos Generales".
+- **Spagna**: retail e wholesale arrivano in automatico dal dataset CNMC "Datos Generales", con lo stesso perimetro.
+- **Canada**: il CRTC separa retail e wholesale (dati 2023).
+- **Altri paesi globali**: la ripartizione consumer/business o retail/wholesale non è pubblicata dai regolatori in forma ufficiale (verificato settembre 2026). Per gli Stati Uniti non esiste un dato di settore: servirebbe una stima dai bilanci di AT&T, Verizon e T-Mobile.
 
 ## Cautele di confronto
 
