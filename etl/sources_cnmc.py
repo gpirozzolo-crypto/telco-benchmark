@@ -316,6 +316,8 @@ def extract_general(records, retrieved, url):
     # un solo valore per etichetta e trimestre, altrimenti ambiguo
     per_q = {q: [sum(v[0] for v in d.values())] for q, d in parts.items() if set(d) == set(wanted) and all(len(v) == 1 for v in d.values())}
     mobile = [" + ".join(wanted)]
+    wholesale_rows = wholesale_ttm(rev, retrieved, url, log)
+    out.extend(wholesale_rows)
     clean = {q: v[0] for q, v in per_q.items() if len(v) == 1}
     qs = sorted(clean, key=lambda q: q[1])
     for i in range(3, len(qs)):
@@ -325,6 +327,34 @@ def extract_general(records, retrieved, url):
                         "period_end": w[-1][1].isoformat(), "frequency": "annuale mobile", "source_id": "cnmc_api", "source_url": url,
                         "retrieved": retrieved, "method": f"CNMC Datos generales, '{mobile[0]}', somma di 4 trimestri"})
     return out, log
+
+
+
+def wholesale_ttm(rev, retrieved, url, log):
+    """Ricavi wholesale: somma di tutti i tipi di ricavo sul mercato mayorista, ultimi 4 trimestri."""
+    parts = {}
+    for r in rev:
+        if "mayorista" not in str(r.get("tipo_de_mercado")).lower():
+            continue
+        q = quarter(r.get("trimestre"))
+        v = _num(r.get("ingresos"))
+        f = scale(r.get("unidades"), "money")
+        if q and v is not None and f is not None:
+            parts.setdefault(q, {}).setdefault(str(r.get("tipo_de_ingreso")), []).append(v * f)
+    # un solo valore per tipo di ricavo e trimestre, altrimenti il trimestre è ambiguo
+    clean = {q: sum(v[0] for v in d.values()) for q, d in parts.items() if all(len(v) == 1 for v in d.values())}
+    if not clean:
+        log.append("CNMC wholesale: nessun ricavo sul mercato mayorista ricostruibile")
+        return []
+    qs = sorted(clean, key=lambda q: q[1])
+    out = []
+    for i in range(3, len(qs)):
+        w = qs[i - 3:i + 1]
+        if _consecutive([x[0] for x in w]):
+            out.append({"country": "ES", "kpi": "rev_wholesale", "value": f"{sum(clean[x] for x in w):.6g}", "period": f"12 mesi a {w[-1][0]}",
+                        "period_end": w[-1][1].isoformat(), "frequency": "annuale mobile", "source_id": "cnmc_api", "source_url": url,
+                        "retrieved": retrieved, "method": "CNMC Datos generales, somma dei ricavi sul mercato mayorista, 4 trimestri"})
+    return out
 
 
 PACKAGE_SEARCH = "https://catalogodatos.cnmc.es/api/3/action/package_search"

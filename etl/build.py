@@ -274,6 +274,14 @@ class Build:
             if g("capex") and g("telecom_rev"):
                 v["capex_intensity"] = self.derived(g("capex") / g("telecom_rev") * 100, yr("capex", "telecom_rev"),
                                                     self.definitions["capex_intensity"], ["capex", "telecom_rev"], cid)
+            # composizione dei ricavi: il retail è la somma consumer + business quando entrambi sono pubblicati
+            if g("rev_b2c") and g("rev_b2b"):
+                v["rev_retail"] = self.derived(g("rev_b2c") + g("rev_b2b"), yr("rev_b2c", "rev_b2b"), "Consumer + business", ["rev_b2c", "rev_b2b"], cid)
+                v["b2b_share"] = self.derived(g("rev_b2b") / (g("rev_b2c") + g("rev_b2b")) * 100, yr("rev_b2c", "rev_b2b"),
+                                              self.definitions["b2b_share"], ["rev_b2c", "rev_b2b"], cid)
+            if g("rev_wholesale") and g("rev_retail"):
+                v["wholesale_share"] = self.derived(g("rev_wholesale") / (g("rev_wholesale") + g("rev_retail")) * 100, yr("rev_wholesale", "rev_retail"),
+                                                    self.definitions["wholesale_share"], ["rev_wholesale", "rev_retail"], cid)
             if g("ftth_subs") and g("fbb_subs"):
                 v["ftth_share"] = self.derived(g("ftth_subs") / g("fbb_subs") * 100, yr("ftth_subs", "fbb_subs"),
                                                self.definitions["ftth_share"], ["ftth_subs", "fbb_subs"], cid)

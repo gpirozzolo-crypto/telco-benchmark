@@ -75,6 +75,16 @@ python -m pytest etl/tests
 
 Apri `dist/index.html` nel browser: non serve un server.
 
+## Composizione dei ricavi (B2C, B2B, wholesale)
+
+Per i Big 5 il sito mostra ricavi retail consumer e business, ricavi wholesale e i rispettivi pesi. I regolatori non pubblicano tutti la stessa ripartizione:
+
+- **Italia**: AGCOM separa consumer, business e wholesale (Appendice statistica della Relazione annuale). Il business include i servizi ICT (cloud, sicurezza, IoT).
+- **Francia**: Arcep separa consumer e business nei soli ricavi dei servizi, esclusi i terminali (dati 2024). Il wholesale non è pubblicato nello stesso rapporto.
+- **Germania**: la Bundesnetzagentur separa solo retail e wholesale; il retail include i terminali.
+- **Regno Unito**: Ofcom separa retail e wholesale.
+- **Spagna**: retail curato; il wholesale arriva in automatico dal dataset CNMC "Datos Generales".
+
 ## Cautele di confronto
 
 Ogni indicatore ha una lettera di confrontabilità:

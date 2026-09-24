@@ -144,6 +144,7 @@ def test_general_mobile_revenue_ttm():
         recs.append(dict(base, tipo_de_ingreso="Telefonía móvil", tipo_de_mercado="Servicio mayorista", ingresos=300))
         recs.append(dict(base, tipo_de_ingreso="Telefonía fija", ingresos=500))
     out, log = sources_cnmc.extract_general(recs, "2026-09-23", "http://x")
+    out = [r for r in out if r["kpi"] == "mobile_rev"]
     assert len(out) == 1 and abs(float(out[0]["value"]) - 7.88) < 1e-6
 
 
@@ -157,3 +158,16 @@ def test_cnmc_monthly_fbb_from_operator_sum():
     by = {r["kpi"]: float(r["value"]) for r in out}
     assert abs(by["fbb_subs"] - 20.1) < 1e-6
     assert abs(by["ftth_subs"] - 18.09) < 1e-6
+
+
+def test_general_wholesale_ttm():
+    recs = []
+    for t in ["2025T1", "2025T2", "2025T3", "2025T4"]:
+        base = dict(servicio="Datos generales", concepto="Ingresos", operador="N/A", trimestre=t, unidades="Millones de euros")
+        recs.append(dict(base, tipo_de_ingreso="Telefonía móvil", tipo_de_mercado="Servicio minorista", ingresos=1500))
+        recs.append(dict(base, tipo_de_ingreso="Banda Ancha móvil", tipo_de_mercado="Servicio minorista", ingresos=470))
+        recs.append(dict(base, tipo_de_ingreso="Interconexión móvil", tipo_de_mercado="Servicio mayorista", ingresos=300))
+        recs.append(dict(base, tipo_de_ingreso="Acceso fijo", tipo_de_mercado="Servicio mayorista", ingresos=450))
+    out, _ = sources_cnmc.extract_general(recs, "2026-09-24", "http://x")
+    w = [r for r in out if r["kpi"] == "rev_wholesale"]
+    assert len(w) == 1 and abs(float(w[0]["value"]) - 3.0) < 1e-9

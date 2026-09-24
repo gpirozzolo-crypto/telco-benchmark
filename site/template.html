@@ -138,7 +138,7 @@ nav.tabs a:hover { color: var(--ink); }
 .facts dd { padding-left: 16px; }
 .facts dt, .facts dd { padding: 7px 0; border-top: 1px solid var(--rule); margin: 0; font-size: 14.5px; }
 .facts dd { text-align: right; font-weight: 600; white-space: nowrap; }
-.facts dd.rank { color: var(--faint); font-weight: 400; font-size: 13px; min-width: 48px; }
+.facts dd.rank { color: var(--faint); font-weight: 400; font-size: 13px; min-width: 78px; padding-left: 14px; }
 .side h3 { font-stretch: 112%; font-size: 18px; margin: 0 0 12px; }
 .stack { display: flex; height: 36px; border-radius: 4px; overflow: hidden; background: var(--track); }
 .stack div { background: var(--c); border-right: 2px solid var(--surface); }
@@ -478,6 +478,25 @@ const D = /*__DATA__*/null;
         h("a", { href: sh.source_url, target: "_blank", rel: "noopener" }, srcName(sh.source_id))));
     } else {
       side.append(h("p", { class: "note" }, "Quote non ancora disponibili da una fonte pubblica verificabile. Aggiungile in data/curated/market_shares.csv."));
+    }
+    // composizione dei ricavi: consumer, business (o retail non ripartito) e wholesale
+    const rv = k => (val(c.id, k) || {}).value;
+    const parts = rv("rev_b2c") && rv("rev_b2b")
+      ? [["Consumer (B2C)", rv("rev_b2c"), 1], ["Business (B2B)", rv("rev_b2b"), 0.6]]
+      : rv("rev_retail") ? [["Retail (consumer e business non separati)", rv("rev_retail"), 0.8]] : [];
+    if (rv("rev_wholesale")) parts.push(["Wholesale", rv("rev_wholesale"), 0.3]);
+    side.append(h("h3", { style: { marginTop: "32px" } }, "Composizione dei ricavi"));
+    if (parts.length) {
+      const tot = parts.reduce((a, p) => a + p[1], 0);
+      const bar = h("div", { class: "stack", role: "img", "aria-label": parts.map(p => `${p[0]} ${fmt("rev_b2c", p[1])} mld €`).join(", ") });
+      parts.forEach(p => bar.append(h("div", { style: { width: (p[1] / tot * 100) + "%", "--c": color(c.id), opacity: String(p[2]) }, title: p[0] })));
+      side.append(bar, h("div", { class: "shares" }, parts.map(p => h("div", {}, h("span", {}, p[0]),
+        h("strong", {}, `${fmt("rev_b2c", p[1])} mld € · ${fmt("leader_share", p[1] / tot * 100)}%`)))));
+      const notes = ["rev_b2c", "rev_retail", "rev_wholesale"].map(k => val(c.id, k)).filter(Boolean);
+      side.append(h("p", { class: "note" }, `Periodo ${notes.map(n => n.period).filter((x, i, a) => a.indexOf(x) === i).join(", ")}. `,
+        !rv("rev_wholesale") ? "Wholesale non pubblicato dal regolatore. " : "", "Perimetri diversi tra paesi: vedi note in Fonti."));
+    } else {
+      side.append(h("p", { class: "note" }, "Ripartizione non disponibile da fonte pubblica verificabile."));
     }
     const grid = h("div", { class: "spark-grid" });
     const prefer = ["mobile_subs", "ftth_subs", "fbb_subs", "mobile_rev", "mobile_data", "population", "gdp_pc", "mobile_per100", "fbb_per100"];

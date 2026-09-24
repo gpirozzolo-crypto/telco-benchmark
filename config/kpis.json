@@ -274,6 +274,75 @@
       "better": null
     },
     {
+      "id": "rev_b2c",
+      "group": "economics",
+      "label": "Ricavi retail consumer (B2C)",
+      "unit": "€ mld",
+      "decimals": 2,
+      "origin": "curated",
+      "money": true,
+      "comparability": "B",
+      "better": null
+    },
+    {
+      "id": "rev_b2b",
+      "group": "economics",
+      "label": "Ricavi retail business (B2B)",
+      "unit": "€ mld",
+      "decimals": 2,
+      "origin": "curated",
+      "money": true,
+      "comparability": "B",
+      "better": null
+    },
+    {
+      "id": "rev_retail",
+      "group": "economics",
+      "label": "Ricavi retail totali",
+      "unit": "€ mld",
+      "decimals": 2,
+      "origin": "curated",
+      "money": true,
+      "comparability": "C",
+      "better": null
+    },
+    {
+      "id": "rev_wholesale",
+      "group": "economics",
+      "label": "Ricavi wholesale",
+      "unit": "€ mld",
+      "decimals": 2,
+      "origin": "curated",
+      "money": true,
+      "comparability": "C",
+      "better": null,
+      "range": [
+        0.3,
+        40
+      ],
+      "tolerance_pct": 25
+    },
+    {
+      "id": "b2b_share",
+      "group": "economics",
+      "label": "Peso del business sul retail",
+      "unit": "%",
+      "decimals": 1,
+      "origin": "derived",
+      "comparability": "B",
+      "better": null
+    },
+    {
+      "id": "wholesale_share",
+      "group": "economics",
+      "label": "Peso del wholesale sui ricavi",
+      "unit": "%",
+      "decimals": 1,
+      "origin": "derived",
+      "comparability": "C",
+      "better": null
+    },
+    {
       "id": "capex",
       "group": "investment",
       "label": "Investimenti (capex)",
@@ -347,7 +416,9 @@
     "capex_intensity": "Capex / ricavi del settore. Il perimetro dei ricavi varia (retail o retail+wholesale): confrontare con cautela.",
     "rev_per_capita": "Ricavi del settore / popolazione.",
     "capex_per_capita": "Capex / popolazione.",
-    "ftth_share": "Linee FTTH / linee banda larga fissa."
+    "ftth_share": "Linee FTTH / linee banda larga fissa.",
+    "b2b_share": "Ricavi retail business / (consumer + business). Definizione di clientela business del regolatore: in Francia include i professionisti dichiarati.",
+    "wholesale_share": "Ricavi wholesale (servizi venduti ad altri operatori) / (retail + wholesale). Il retail include o esclude i terminali a seconda del paese: vedi note."
   },
   "auto_tolerance_pct": 35
 }
